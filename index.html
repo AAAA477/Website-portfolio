@@ -1,207 +1,242 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Personal Portfolio Website - Andrew Adrian Ansah</title>
-    <link rel="stylesheet" href="style.css">
-    <script src="https://kit.fontawesome.com/7ee1f18630.js" crossorigin="anonymous"></script>
 
+<head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Personal Portfolio Website - Andrew Adrian Ansah</title>
+  <link rel="stylesheet" href="style.css" />
+  <script src="https://kit.fontawesome.com/7ee1f18630.js" crossorigin="anonymous"></script>
 </head>
+
 <body>
-    <div id="header">
-        <div class="container">
-            <nav>
-                <img src="images/Add a heading.png" alt="Andrew Adrian Ansah" class="logo">
-                <ul id="sidemenu">
-                    <li><a href="#header">Home</a></li>
-                    <li><a href="#about">About</a></li>
-                    <li><a href="#services">Services</a></li>
-                    <li><a href="#portfolio">Portfolio</a></li>
-                    <li><a href="#contact">Contact</a></li> 
-                    <i class="fas fa-times" onclick="closemenu()"></i>
-                </ul>
-                <i class="fas fa-bars" onclick="openmenu()"></i>
-            </nav>
-            
-            <div class="header-text">
-                <p>Python Developer</p>
-                <h1>Hi, I'm <span>Andrew</span><br>Ansah from Ghana</h1>
-            </div>
-        </div>
+  <header id="header" class="scroll-animate">
+    <div class="container">
+      <nav>
+        <img src="images/Add a heading.png" alt="Andrew Adrian Ansah" class="logo" />
+        <ul id="sidemenu">
+          <li><a href="#header">Home</a></li>
+          <li><a href="#about">About</a></li>
+          <li><a href="#services">Services</a></li>
+          <li><a href="#portfolio">Portfolio</a></li>
+          <li><a href="#contact">Contact</a></li>
+          <i class="fas fa-times" onclick="closemenu()"></i>
+        </ul>
+        <i class="fas fa-bars" onclick="openmenu()"></i>
+      </nav>
+      <div class="header-text animate-slide scroll-animate">
+        <p>Python Developer</p>
+        <h1>
+          Hi, I'm <span>Andrew</span><br />
+          Ansah from Ghana
+        </h1>
+      </div>
     </div>
-    <!--------------------------- About Section ---------------------------->
-    <div id="about">
-        <div class="container">
-            <div class="row">
-                <div class="about-col-1">
-                    <img src="images/About.jpg">
-                </div>
-                <div class="about-col-2">
-                    <h1 class="sub-title">About Me</h1>
-                    <p>I'm a computer science student at the University of Alberta, with great python skills, who is looking to solve problems with my coding skills. I have a keen interest in App development and Artificial Intelligence.</p>
-                    <div class="tab-titles">
-                        <p class="tab-links active-link" onclick="opentab('skills')">Skills</p>
-                        <p class="tab-links" onclick="opentab('experience')">Experience</p>
-                        <p class="tab-links" onclick="opentab('education')">Education</p>
-                    </div>
-                    <div class="tab-contents active-tab" id="skills">
-                        <ul>
-                            <li><span>UI/UX</span><br>Designing Web/App interfaces</li>
-                            <li><span>Web development</span><br>Web app Development</li>
-                            <li><span>App development</span><br>Building Android/ios apps</li>
-                        </ul>
-                    </div>
-                    <div class="tab-contents" id="experience">
-                        <ul>
-                            <li><span>2023 - current</span><br>Web Developer</li>
-                        </ul>
-                    </div>
-                    <div class="tab-contents" id="education">
-                        <ul>
-                            <li><span>2023 - current</span><br>Student at the University of Alberta</li>
-                            <li><span>2022 - 2023</span><br>Student at NCUK Accra</li>
-                            <li><span>2019 - 2022</span><br>Student at GCIHS</li>
-                        </ul>
-                    </div>
-                </div>
+  </header>
+
+  <main>
+    <section id="about" class="animate-fade scroll-animate" style="animation-delay: 0.3s;">
+      <div class="container">
+        <div class="row">
+          <div class="about-col-1">
+            <img src="images/About.jpg" alt="About Andrew" class="animate-fade scroll-animate" />
+          </div>
+          <div class="about-col-2">
+            <h1 class="sub-title">About Me</h1>
+            <p>
+              I'm a computer science student at the University of Alberta with strong Python skills and a hunger to
+              solve real problems. I’m also passionate about app development and artificial intelligence.
+            </p>
+            <div class="tab-titles">
+              <p class="tab-links active-link" onclick="opentab('skills')">Skills</p>
+              <p class="tab-links" onclick="opentab('experience')">Experience</p>
+              <p class="tab-links" onclick="opentab('education')">Education</p>
             </div>
+            <div class="tab-contents active-tab" id="skills">
+              <ul>
+                <li><span>UI/UX</span><br />Designing Web/App interfaces</li>
+                <li><span>Web development</span><br />Building dynamic web apps</li>
+                <li><span>App development</span><br />Creating Android/iOS applications</li>
+              </ul>
+            </div>
+            <div class="tab-contents" id="experience">
+              <ul>
+                <li><span>2023 - current</span><br />Web Developer</li>
+              </ul>
+            </div>
+            <div class="tab-contents" id="education">
+              <ul>
+                <li><span>2023 - current</span><br />Student at the University of Alberta</li>
+                <li><span>2022 - 2023</span><br />Student at NCUK Accra</li>
+                <li><span>2019 - 2022</span><br />Student at GCIHS</li>
+              </ul>
+            </div>
+          </div>
         </div>
-    </div>
-<!------------------services-------------->
-<div id="services">
-    <div class="container"> 
+      </div>
+    </section>
+
+    <section id="services" class="animate-fade scroll-animate" style="animation-delay: 0.5s;">
+      <div class="container">
         <h1 class="sub-title">My Services</h1>
         <div class="services-list">
-            <div>
-                <i class="fa-solid fa-code"></i>
-                <h2>Web design</h2>
-                <p>I design beautiful websites such as this using html and css, I am also adept at using google sites to  build sites</p>
-                <a href="#">Learn more</a>
-            </div>
-            <div>
-                <i class="fa-solid fa-crop"></i>
-                <h2>UI/UX design</h2>
-                <p>I design beautiful websites such as this using html and css, I am also adept at using google sites to  build sites</p>
-                <a href="#">Learn more</a>
-            </div>
-            <div>
-                <i class="fa-brands fa-app-store"></i>
-                <h2>App design</h2>
-                <p>I design beautiful websites such as this using html and css, I am also adept at using google sites to  build sites</p>
-                <a href="#">Learn more</a>
-            </div>
+          <div class="animate-pop scroll-animate">
+            <i class="fa-solid fa-code"></i>
+            <h2>Web Design</h2>
+            <p>I craft visually appealing websites using HTML, CSS, and modern design principles.</p>
+            <a href="#">Learn more</a>
+          </div>
+          <div class="animate-pop scroll-animate" style="animation-delay: 0.2s;">
+            <i class="fa-solid fa-crop"></i>
+            <h2>UI/UX Design</h2>
+            <p>I design intuitive interfaces that deliver an optimal user experience across devices.</p>
+            <a href="#">Learn more</a>
+          </div>
+          <div class="animate-pop scroll-animate" style="animation-delay: 0.4s;">
+            <i class="fa-brands fa-app-store"></i>
+            <h2>App Design</h2>
+            <p>I build sleek and functional mobile apps focused on usability and aesthetics.</p>
+            <a href="#">Learn more</a>
+          </div>
         </div>
-    </div>
-</div>
-<!-------------------portfolio------------->
-<div id="portfolio">
-    <div class="container">
+      </div>
+    </section>
+
+    <section id="portfolio" class="animate-fade scroll-animate" style="animation-delay: 0.7s;">
+      <div class="container">
         <h1 class="sub-title">My Work</h1>
         <div class="work-list">
-            <div class="work">
-                <img src="images/work-1.png">
-                <div class="layer">
-                    <h3>Social Media App</h3>
-                    <p>A social media application</p>
-                    <a href="#"><i class="fa-solid fa-arrow-up-right-from-square"></i></a>
-                </div>
+          <div class="work animate-pop scroll-animate">
+            <img src="images/work-1.png" alt="Social Media App" />
+            <div class="layer">
+              <h3>Social Media App</h3>
+              <p>A dynamic social platform design</p>
+              <a href="#"><i class="fa-solid fa-arrow-up-right-from-square"></i></a>
             </div>
-            <div class="work">
-                <img src="images/work-2.png">
-                <div class="layer">
-                    <h3>Social Media App</h3>
-                    <p>A social media application</p>
-                    <a href="#"><i class="fa-solid fa-arrow-up-right-from-square"></i></a>
-                </div>
+          </div>
+          <div class="work animate-pop scroll-animate" style="animation-delay: 0.2s;">
+            <img src="images/work-2.png" alt="Social Media App" />
+            <div class="layer">
+              <h3>Social Media App</h3>
+              <p>Engaging user interactions</p>
+              <a href="#"><i class="fa-solid fa-arrow-up-right-from-square"></i></a>
             </div>
-            <div class="work">
-                <img src="images/Screenshot 2024-10-13 180736.png">
-                <div class="layer">
-                    <h3>Fitness website</h3>
-                    <p>Fitness website</p>
-                    <a href="https://670c5c295c531f0c08288ef7--thegym123.netlify.app/#workout"><i class="fa-solid fa-arrow-up-right-from-square"></i></a>
-                </div>
+          </div>
+          <div class="work animate-pop scroll-animate" style="animation-delay: 0.4s;">
+            <img src="images/Screenshot 2024-10-13 180736.png" alt="Fitness Website" />
+            <div class="layer">
+              <h3>Fitness Website</h3>
+              <p>A modern fitness portal</p>
+              <a href="https://670c5c295c531f0c08288ef7--thegym123.netlify.app/#workout">
+                <i class="fa-solid fa-arrow-up-right-from-square"></i>
+              </a>
             </div>
-        </div> 
-        <a href="#" class="btn">See more</a>     
-    </div>
-</div>
-<!--------------------contact---------->
-<div id="contact">
-    <div class="container">
+          </div>
+        </div>
+        <a href="#" class="btn">See more</a>
+      </div>
+    </section>
+
+    <section id="contact" class="animate-fade scroll-animate" style="animation-delay: 0.9s;">
+      <div class="container">
         <div class="row">
-            <div class="contact-left">
-                <h1 class="sub-title">Contact Me</h1>
-                <p><i class="fa-solid fa-paper-plane"></i> aaaansah@gmail.com</p>
-                <p><i class="fa-solid fa-phone"></i> +1 780 710 9134</p>
-                <div class="social-icons">
-                    <a href="#"><i class="fa-brands fa-facebook"></i></a>
-                    <a href="#"><i class="fa-brands fa-twitter-square"></i></a>
-                    <a href="#"><i class="fa-brands fa-instagram"></i></a>
-                    <a href="#"><i class="fa-brands fa-linkedin"></i></a>
-                    
-                </div>
-                <a href="images/my-cv.pdf" download class="btn btn2">Download CV</a>
+          <div class="contact-left">
+            <h1 class="sub-title">Contact Me</h1>
+            <p><i class="fa-solid fa-paper-plane"></i> aaaansah@gmail.com</p>
+            <p><i class="fa-solid fa-phone"></i> +1 780 710 9134</p>
+            <div class="social-icons">
+              <a href="#"><i class="fa-brands fa-facebook"></i></a>
+              <a href="#"><i class="fa-brands fa-twitter-square"></i></a>
+              <a href="#"><i class="fa-brands fa-instagram"></i></a>
+              <a href="#"><i class="fa-brands fa-linkedin"></i></a>
             </div>
-            <div class="contact-right">
-                <form name = "submit-to-google-sheet">
-                    <input type="text" name="Name" id="name" placeholder="Your Name" required>
-                    <input type="email" name="Email" id="email" placeholder="Your Email" required>
-                    <textarea name="Message" rows="6" placeholder="Your Message"></textarea>
-                    <button type="submit" class="btn btn2">Submit</button>
-                </form>
-                <span id="msg"></span>
-            </div>
+            <a href="images/my-cv.pdf" download class="btn btn2">Download CV</a>
+          </div>
+          <div class="contact-right">
+            <form name="submit-to-google-sheet">
+              <input type="text" name="Name" id="name" placeholder="Your Name" required />
+              <input type="email" name="Email" id="email" placeholder="Your Email" required />
+              <textarea name="Message" rows="6" placeholder="Your Message"></textarea>
+              <button type="submit" class="btn btn2">Submit</button>
+            </form>
+            <span id="msg"></span>
+          </div>
         </div>
-        <div class="copyright">
-            <p>Copyright © 2023 Ansah. All rights reserved</p>
-        </div>
-    </div>
-<script>
+      </div>
+    </section>
+  </main>
+
+  <footer class="copyright scroll-animate">
+    <p>Copyright © 2023 Ansah. All rights reserved</p>
+  </footer>
+
+  <!-- Back to Top Button -->
+  <button id="backToTop" class="back-to-top"><i class="fa-solid fa-arrow-up"></i></button>
+
+  <!-- Core Scripts -->
+  <script>
+    // Tab functionality
     var tablinks = document.getElementsByClassName("tab-links");
     var tabcontents = document.getElementsByClassName("tab-contents");
     function opentab(tabname) {
-        for (var tablink of tablinks) {
-            tablink.classList.remove("active-link");
-        }
-        for (var tabcontent of tabcontents) {
-            tabcontent.style.display = 'none'; // Hide all tab contents
-        }
-        document.getElementById(tabname).style.display = 'block'; // Show the selected tab content
-        document.querySelector(`[onclick="opentab('${tabname}')"]`).classList.add("active-link"); // Highlight the selected tab link
+      for (var tablink of tablinks) {
+        tablink.classList.remove("active-link");
+      }
+      for (var tabcontent of tabcontents) {
+        tabcontent.style.display = 'none';
+      }
+      document.getElementById(tabname).style.display = 'block';
+      document.querySelector(`[onclick="opentab('${tabname}')"]`).classList.add("active-link");
     }
+    document.getElementById('skills').style.display = 'block';
 
-    // Initialize the first tab open on page load
-    document.getElementById('skills').style.display = 'block'; // You can choose which tab to show on load
-</script>
-<script>
+    // Side menu toggle
     var sidemenu = document.getElementById("sidemenu");
-    function openmenu(){
-        sidemenu.style.right = "0";
-    }
-    function closemenu(){
-        sidemenu.style.right = "-200px";
-    }
-</script>
-<script>
-    const scriptURL = 'https://script.google.com/macros/s/AKfycbz2C8Ot1Df0LJ4e_GUzr_h-YWlGnl74oCUtBJdex1Q04HFljwuEsR8Bl2UdMqXkwcGX/exec'
-    const form = document.forms['submit-to-google-sheet']
-    const msg = document.getElementById("msg")
-  
+    function openmenu() { sidemenu.style.right = "0"; }
+    function closemenu() { sidemenu.style.right = "-200px"; }
+
+    // Form submission (Google Sheets integration)
+    const scriptURL = 'https://script.google.com/macros/s/AKfycbz2C8Ot1Df0LJ4e_GUzr_h-YWlGnl74oCUtBJdex1Q04HFljwuEsR8Bl2UdMqXkwcGX/exec';
+    const form = document.forms['submit-to-google-sheet'];
+    const msg = document.getElementById("msg");
     form.addEventListener('submit', e => {
-      e.preventDefault()
-      fetch(scriptURL, { method: 'POST', body: new FormData(form)})
+      e.preventDefault();
+      fetch(scriptURL, { method: 'POST', body: new FormData(form) })
         .then(response => {
-            msg.innerHTML="Message sent successfully"
-            setTimeout(function(){
-                msg.innerHTML=""
-            },5000)        
-            form.reset()
+          msg.innerHTML = "Message sent successfully";
+          setTimeout(() => { msg.innerHTML = ""; }, 5000);
+          form.reset();
         })
-        .catch(error => console.error('Error!', error.message))
-    })
+        .catch(error => console.error('Error!', error.message));
+    });
+
+    // IntersectionObserver for scroll-triggered animations
+    document.addEventListener('DOMContentLoaded', () => {
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('in-view');
+            // Optionally unobserve once element is in view:
+            observer.unobserve(entry.target);
+          }
+        });
+      }, { threshold: 0.1 });
+
+      document.querySelectorAll('.scroll-animate').forEach(el => {
+        observer.observe(el);
+      });
+    });
+
+    // Back-to-top button
+    const backToTop = document.getElementById('backToTop');
+    window.addEventListener('scroll', () => {
+      backToTop.style.display = window.scrollY > 300 ? 'block' : 'none';
+    });
+    backToTop.addEventListener('click', () => {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    });
   </script>
 </body>
+
 </html>
