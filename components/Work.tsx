@@ -114,13 +114,7 @@ export default function Work() {
                 <p className="text-muted">
                   {entry.role} · {entry.location}
                 </p>
-                <ul className="mt-3 grid gap-2 text-muted">
-                  {entry.bullets.map((bullet) => (
-                    <li key={bullet.slice(0, 40)} className="pl-4 -indent-4">
-                      • {bullet}
-                    </li>
-                  ))}
-                </ul>
+                <p className="mt-3 max-w-[62ch] text-lead text-muted">{entry.story}</p>
                 <TagList tags={entry.tags} />
               </li>
             ))}
@@ -132,22 +126,44 @@ export default function Work() {
               <h3 className="mb-6 font-display text-h3">Founder ventures</h3>
               <ul className="grid gap-6 md:grid-cols-2">
                 {ventures.map((venture) => (
-                  <li
-                    key={venture.name}
-                    className="entry-card border border-line p-5"
-                  >
-                    <p className="flex items-center justify-between gap-4">
-                      <a
-                        href={venture.href}
-                        className="font-display text-h3 leading-tight text-text transition-colors hover:text-accent"
-                      >
-                        {venture.name}
-                      </a>
+                  <li key={venture.name}>
+                    <div className="mb-3 flex flex-wrap items-baseline justify-between gap-x-4 gap-y-1">
+                      <h4 className="font-display text-h3 leading-tight">
+                        <a href={venture.href} className="transition-colors hover:text-accent">
+                          {venture.name}
+                        </a>
+                      </h4>
                       <span className="rounded-full border border-line-strong px-2 py-0.5 text-meta text-muted">
                         {venture.status}
                       </span>
-                    </p>
-                    <p className="mt-2 text-muted">{venture.description}</p>
+                    </div>
+
+                    <a
+                      href={venture.href}
+                      className="block"
+                      aria-label={`Visit ${venture.name}`}
+                    >
+                      <span className="browser-frame block border border-line bg-surface">
+                        <span className="browser-frame__bar">
+                          <span aria-hidden="true" className="browser-frame__dot" />
+                          <span aria-hidden="true" className="browser-frame__dot" />
+                          <span aria-hidden="true" className="browser-frame__dot" />
+                          <span className="browser-frame__url">{venture.name}</span>
+                        </span>
+                        <span className="browser-frame__embed">
+                          <iframe
+                            src={venture.href}
+                            title={`Live preview of ${venture.name}`}
+                            loading="lazy"
+                            sandbox="allow-scripts allow-same-origin"
+                            tabIndex={-1}
+                            aria-hidden="true"
+                          />
+                        </span>
+                      </span>
+                    </a>
+
+                    <p className="mt-3 text-muted">{venture.description}</p>
                   </li>
                 ))}
               </ul>
@@ -177,13 +193,7 @@ export default function Work() {
                 <p className="text-muted">
                   {entry.role} · {entry.location}
                 </p>
-                <ul className="mt-3 grid gap-2 text-muted">
-                  {entry.bullets.map((bullet) => (
-                    <li key={bullet.slice(0, 40)} className="pl-4 -indent-4">
-                      • {bullet}
-                    </li>
-                  ))}
-                </ul>
+                <p className="mt-3 max-w-[62ch] text-lead text-muted">{entry.story}</p>
                 <TagList tags={entry.tags} />
                 {entry.recognition && entry.recognition.length > 0 && (
                   <ul className="mt-3 flex flex-wrap gap-2 text-meta">

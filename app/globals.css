@@ -324,6 +324,88 @@
     transform: translate3d(0, calc(var(--parallax, 0) * 1px), 0);
   }
 
+  /* Browser-chrome mockup for a pre-launch venture: honest about there being
+     no live content to show yet (both sites are single-line stubs right
+     now), while still reading as "a real site exists" rather than a plain
+     link. Swap the body content for a real screenshot once one launches. */
+  .browser-frame {
+    overflow: hidden;
+    border-radius: 6px;
+  }
+
+  .browser-frame__bar {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    padding: 0.6rem 0.85rem;
+    background-color: var(--color-bg);
+    border-bottom: 1px solid var(--color-line);
+  }
+
+  .browser-frame__dot {
+    width: 0.55rem;
+    height: 0.55rem;
+    border-radius: 50%;
+    background-color: var(--color-line-strong);
+  }
+
+  .browser-frame__url {
+    margin-left: 0.35rem;
+    padding: 0.15rem 0.6rem;
+    border-radius: 999px;
+    background-color: var(--color-surface);
+    color: var(--color-muted);
+    font-size: var(--text-meta);
+    font-family: var(--font-sans);
+  }
+
+  /* Live embed of the venture's actual site. The iframe is rendered at 4x the
+     container width and scaled back down by a quarter, so it loads at a real
+     desktop viewport rather than reflowing to a phone layout inside a small
+     box. pointer-events are off so the card behaves as a preview: clicks go
+     to the wrapping link and open the real site, rather than being swallowed
+     by the embedded page. */
+  .browser-frame__embed {
+    position: relative;
+    display: block;
+    overflow: hidden;
+    height: 15rem;
+    background-color: #ffffff;
+  }
+
+  .browser-frame__embed iframe {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 400%;
+    height: 400%;
+    border: 0;
+    transform: scale(0.25);
+    transform-origin: top left;
+    pointer-events: none;
+  }
+
+  .browser-frame__label {
+    padding: 0.4rem 0.9rem;
+    border-radius: 999px;
+    background-color: var(--color-bg);
+    border: 1px solid var(--color-line-strong);
+    color: var(--color-text);
+    font-size: var(--text-meta);
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+  }
+
+  html.js-motion .browser-frame {
+    transition: transform 280ms var(--ease-soft);
+  }
+
+  html.js-motion a:hover > .browser-frame,
+  html.js-motion a:focus-visible > .browser-frame {
+    transform: translate3d(0, -3px, 0);
+  }
+
   /* Hero heading words: each word is its own reveal target with its own
      stagger delay, set inline per word — see components/Hero.tsx. */
   .word-reveal {

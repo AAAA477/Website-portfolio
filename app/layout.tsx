@@ -14,7 +14,7 @@ export const metadata: Metadata = {
     type: "website",
     title: `${site.name} · ${site.role}`,
     description: site.description,
-    images: [{ url: "/images/About.jpg" }],
+    images: [{ url: "/images/hero-headshot.jpg" }],
   },
   twitter: {
     card: "summary_large_image",

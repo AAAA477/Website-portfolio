@@ -72,11 +72,16 @@ role — not in the CV, need Andrew to confirm before publishing.
 ### Neubahar Labs — Undergraduate Researcher
 **Sep 2026 – Present · Edmonton, Canada**
 
-- Building an analysis framework for learned representations, used to study
-  feature absorption and feature splitting in sparse autoencoders (SAEs).
-- Investigating how one SAE latent can absorb a more general concept, and how
-  a single concept fragments across latents as dictionary size grows — and
-  what that means for the reliability of SAE latents as interpretability units.
+> **Kept deliberately vague, on purpose.** Andrew asked (2026-09-12) not to say
+> much publicly about this work yet. The site shows one line only:
+>
+> "My focus here is on sparse autoencoders, specifically absorption and
+> splitting."
+>
+> This file is committed to a **public** repo, so the detailed description that
+> used to live here has been removed rather than just hidden from the site.
+> The full version stays in the CV, which Andrew controls who he sends it to.
+> Don't re-expand this section without asking him first.
 
 *Field:* mechanistic interpretability, sparse autoencoders
 

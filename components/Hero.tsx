@@ -89,7 +89,7 @@ export default function Hero() {
             width={hero.portrait.width}
             height={hero.portrait.height}
             priority
-            className="aspect-[624/811] w-full object-cover"
+            className="aspect-[810/1080] w-full object-cover"
           />
         </figure>
       </div>

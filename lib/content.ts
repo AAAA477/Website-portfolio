@@ -16,7 +16,8 @@ export type WorkEntry = {
   role: string;
   period: string;
   location: string;
-  bullets: string[];
+  /** Narrative prose, not a resume bullet list. See CONTENT.md for sourcing. */
+  story: string;
   tags: string[];
 };
 
@@ -25,7 +26,12 @@ export type ResearchEntry = {
   role: string;
   period: string;
   location: string;
-  bullets: string[];
+  /**
+   * Narrative prose, not a resume bullet list. Kept deliberately short for
+   * Neubahar Labs at Andrew's request; he doesn't want to say much publicly
+   * about that work yet beyond the general focus area.
+   */
+  story: string;
   tags: string[];
   recognition?: string[];
 };
@@ -66,10 +72,10 @@ export const hero = {
   heading: "I like solving problems, in code and in how models think.",
   lede: "I'm Andrew, a computer science student at the University of Alberta. I split my time between mechanistic interpretability research on language models and shipping full-stack software, and I'm building two ventures of my own on the side.",
   portrait: {
-    src: "/images/About.jpg",
+    src: "/images/hero-headshot.jpg",
     alt: "Portrait of Andrew Adrian Ansah",
-    width: 624,
-    height: 811,
+    width: 810,
+    height: 1080,
   },
 } as const;
 
@@ -80,11 +86,8 @@ export const workExperience: WorkEntry[] = [
     role: "Full-Stack Developer",
     period: "Nov 2025 – Present",
     location: "Remote",
-    bullets: [
-      "Lead a team of 3 delivering full-stack software across GIS portals, management systems, and automation tooling using GeoNode, Google Apps Script, React, and Java.",
-      "Built automation software that eliminated repetitive manual workflows, reducing deployment time by 40%.",
-      "Customized the MapStore (React) UI and built repeatable data pipelines in PostGIS/GeoServer, cutting manual publishing time in half.",
-    ],
+    story:
+      "I lead a team of three at EW Analytics, building across GIS portals, management systems and automation tooling in GeoNode, Google Apps Script, React and Java. One of the bigger wins was automation software that cut deployment time by 40% by eliminating repetitive manual workflows. I've also customized the MapStore React UI and built repeatable PostGIS/GeoServer data pipelines that cut manual publishing time in half.",
     tags: ["GeoNode", "React", "Java", "PostGIS", "GeoServer", "MapStore"],
   },
 ];
@@ -96,10 +99,9 @@ export const research: ResearchEntry[] = [
     role: "Undergraduate Researcher",
     period: "Sep 2026 – Present",
     location: "Edmonton, Canada",
-    bullets: [
-      "Building an analysis framework for learned representations, used to study feature absorption and feature splitting in sparse autoencoders (SAEs).",
-      "Investigating how one SAE latent can absorb a more general concept, and how a single concept fragments across latents as dictionary size grows, and what that means for the reliability of SAE latents as interpretability units.",
-    ],
+    // Deliberately brief, at Andrew's request: he'd rather not go into detail
+    // on this work publicly yet.
+    story: "My focus here is on sparse autoencoders, specifically absorption and splitting.",
     tags: ["Sparse autoencoders", "Mechanistic interpretability"],
   },
   {
@@ -107,11 +109,8 @@ export const research: ResearchEntry[] = [
     role: "Researcher",
     period: "May 2025 – Present",
     location: "Remote",
-    bullets: [
-      "Investigated emergent misalignment in language models (0.5B–32B parameters), demonstrating it occurs reliably across model scales using LoRA fine-tuning and activation steering.",
-      "Built linear probes and early-warning indicators on adapter weights to detect misaligned behavior before it manifests at the output level.",
-      "Co-authored and open-sourced models on HuggingFace.",
-    ],
+    story:
+      "At Algoverse I've been investigating emergent misalignment in language models, from 0.5B up to 32B parameters, using LoRA fine-tuning and activation steering to show it holds up reliably across model scales. I built linear probes on adapter weights that work as early-warning indicators, catching misaligned behavior before it shows up in a model's output. The work has been co-authored and open-sourced on HuggingFace.",
     tags: ["LoRA", "Activation steering", "Linear probes", "HuggingFace"],
     recognition: ["MechInterp (Spotlight)", "CogInterp", "UniReps (Honorable Mention)"],
   },
