@@ -1,0 +1,154 @@
+@import "tailwindcss";
+
+/* =========================================================================
+   Design tokens.
+   Tailwind v4 reads this block and generates the matching utilities, so
+   `bg-bg`, `text-muted`, `font-display` and `text-h1` all resolve from here.
+   Warm charcoal canvas, one brass accent, editorial serif over system sans.
+   ========================================================================= */
+
+@theme {
+  /* Surfaces. Warm charcoal rather than pure black. */
+  --color-bg: #141312;
+  --color-surface: #1c1a18;
+  --color-line: #2e2b28;
+  --color-line-strong: #46413b;
+
+  /* Ink. Contrast against --color-bg: text 16.99:1, muted 7.43:1,
+     accent 8.38:1. All clear WCAG AA; text and accent clear AAA. */
+  --color-text: #f5f3f0;
+  --color-muted: #a8a29a;
+  --color-accent: #c9a961;
+  --color-accent-ink: #141312;
+  --color-danger: #f0a89a;
+
+  /* Type. No webfonts: zero network cost, zero swap reflow, zero CLS. */
+  --font-display: ui-serif, Georgia, "Iowan Old Style", "Times New Roman", serif;
+  --font-sans: system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+
+  /* Fluid type scale. */
+  --text-meta: clamp(0.8125rem, 0.79rem + 0.12vw, 0.875rem);
+  --text-body: clamp(1rem, 0.97rem + 0.15vw, 1.0625rem);
+  --text-lead: clamp(1.125rem, 1.07rem + 0.28vw, 1.3125rem);
+  --text-h3: clamp(1.5rem, 1.35rem + 0.75vw, 2rem);
+  --text-h2: clamp(2rem, 1.6rem + 2vw, 3.25rem);
+  --text-h1: clamp(2.25rem, 1.6rem + 3.2vw, 4rem);
+
+  --ease-soft: cubic-bezier(0.22, 0.61, 0.36, 1);
+}
+
+/* ---------- Base ---------- */
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+    /* Keeps anchored sections clear of the sticky header. */
+    scroll-padding-top: 5.5rem;
+    -webkit-text-size-adjust: 100%;
+    text-size-adjust: 100%;
+  }
+
+  body {
+    background-color: var(--color-bg);
+    color: var(--color-text);
+    font-family: var(--font-sans);
+    font-size: var(--text-body);
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--color-accent);
+    outline-offset: 3px;
+    border-radius: 2px;
+  }
+
+  :focus:not(:focus-visible) {
+    outline: none;
+  }
+}
+
+/* =========================================================================
+   Motion.
+   Every rule is scoped to html.js-motion, which Motion.tsx adds only when
+   JavaScript runs AND the visitor has not asked for reduced motion. Without
+   that class nothing is hidden, nothing animates, and the page is complete.
+   Only opacity and transform are animated: compositor-only, so motion can
+   never contribute to layout shift.
+   ========================================================================= */
+
+@layer components {
+  .scroll-progress {
+    display: none;
+  }
+
+  html.js-motion .scroll-progress {
+    display: block;
+    position: fixed;
+    inset-block-start: 0;
+    inset-inline: 0;
+    z-index: 60;
+    height: 2px;
+    background-color: var(--color-accent);
+    transform: scaleX(var(--progress, 0));
+    transform-origin: left center;
+    will-change: transform;
+  }
+
+  html.js-motion [data-reveal] {
+    opacity: 0;
+    transform: translate3d(0, 1.25rem, 0);
+  }
+
+  html.js-motion [data-reveal].is-revealed {
+    opacity: 1;
+    transform: translate3d(0, 0, 0);
+    transition:
+      opacity 620ms var(--ease-soft),
+      transform 620ms var(--ease-soft);
+    /* --reveal-delay is set per element to stagger a group. */
+    transition-delay: var(--reveal-delay, 0ms);
+  }
+
+  /* Media panels travel further, so the hero reads as layered. */
+  html.js-motion [data-reveal-distance="far"] {
+    transform: translate3d(0, 2rem, 0);
+  }
+
+  /* Colour only: the header height never changes, so nothing below shifts. */
+  html.js-motion .site-header {
+    transition:
+      border-color 240ms ease,
+      background-color 240ms ease;
+  }
+
+  html.js-motion .site-header[data-scrolled="true"] {
+    border-bottom-color: var(--color-line-strong);
+  }
+
+  /* Cards lift 2px rather than zooming, so neighbours never reflow and the
+     image never crops differently. */
+  html.js-motion .project-card {
+    transition: transform 240ms var(--ease-soft);
+  }
+
+  html.js-motion .project-card:hover {
+    transform: translate3d(0, -2px, 0);
+  }
+}
+
+/* ---------- Reduced motion ---------- */
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}

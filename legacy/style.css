@@ -1,0 +1,730 @@
+/* =========================================================================
+   Andrew Adrian Ansah — portfolio
+   Design system: warm charcoal canvas, one brass accent, editorial serif
+   display over a system sans UI. Flat surfaces, 1px borders, no glow.
+   ========================================================================= */
+
+/* ---------- Tokens ---------- */
+
+:root {
+  /* Surfaces. Warm charcoal rather than pure black. */
+  --bg: #141312;
+  --surface: #1c1a18;
+  --border: #2e2b28;
+  --border-strong: #46413b;
+
+  /* Ink. Contrast against --bg: text 16.99:1, muted 7.43:1, accent 8.38:1. */
+  --text: #f5f3f0;
+  --muted: #a8a29a;
+  --accent: #c9a961;
+  --accent-ink: #141312;
+
+  /* Type. No webfonts: zero network cost, zero swap reflow, zero CLS. */
+  --font-display: ui-serif, Georgia, "Iowan Old Style", "Times New Roman", serif;
+  --font-sans: system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+
+  /* Fluid type scale. */
+  --step--1: clamp(0.8125rem, 0.79rem + 0.12vw, 0.875rem);
+  --step-0: clamp(1rem, 0.97rem + 0.15vw, 1.0625rem);
+  --step-1: clamp(1.125rem, 1.07rem + 0.28vw, 1.3125rem);
+  --step-2: clamp(1.5rem, 1.35rem + 0.75vw, 2rem);
+  --step-3: clamp(2rem, 1.6rem + 2vw, 3.25rem);
+  --step-4: clamp(2.25rem, 1.6rem + 3.2vw, 4rem);
+
+  /* Spacing scale. */
+  --space-1: 0.25rem;
+  --space-2: 0.5rem;
+  --space-3: 1rem;
+  --space-4: 1.5rem;
+  --space-5: 2.5rem;
+  --space-6: 4rem;
+  --space-7: 6rem;
+  --space-8: 10rem;
+
+  --measure: 62ch;
+  --wrap: 72rem;
+  --radius: 2px;
+  --speed: 240ms;
+}
+
+/* ---------- Reset ---------- */
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+body,
+h1,
+h2,
+h3,
+p,
+ul,
+ol,
+dl,
+dd,
+figure {
+  margin: 0;
+}
+
+ul,
+ol {
+  padding: 0;
+  list-style: none;
+}
+
+html {
+  scroll-behavior: smooth;
+  /* Keep anchored sections clear of the sticky header. */
+  scroll-padding-top: 5.5rem;
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+}
+
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--font-sans);
+  font-size: var(--step-0);
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+}
+
+img {
+  display: block;
+  max-width: 100%;
+  height: auto;
+}
+
+a {
+  color: inherit;
+}
+
+/* ---------- Focus ---------- */
+
+:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 3px;
+  border-radius: var(--radius);
+}
+
+:focus:not(:focus-visible) {
+  outline: none;
+}
+
+.skip-link {
+  position: absolute;
+  left: var(--space-3);
+  top: var(--space-3);
+  z-index: 100;
+  padding: var(--space-2) var(--space-3);
+  background: var(--accent);
+  color: var(--accent-ink);
+  font-weight: 600;
+  text-decoration: none;
+  transform: translateY(-200%);
+}
+
+.skip-link:focus {
+  transform: translateY(0);
+}
+
+/* ---------- Layout ---------- */
+
+.wrap {
+  width: 100%;
+  max-width: var(--wrap);
+  margin-inline: auto;
+  padding-inline: var(--space-4);
+}
+
+.section {
+  padding-block: var(--space-7);
+  border-top: 1px solid var(--border);
+}
+
+.section__head {
+  margin-bottom: var(--space-5);
+}
+
+.section__title {
+  font-family: var(--font-display);
+  font-size: var(--step-3);
+  font-weight: 400;
+  line-height: 1.1;
+  letter-spacing: -0.015em;
+}
+
+.section__note {
+  margin-top: var(--space-2);
+  max-width: var(--measure);
+  color: var(--muted);
+}
+
+.grid {
+  display: grid;
+  gap: var(--space-5);
+}
+
+/* ---------- Header ---------- */
+
+.site-header {
+  position: sticky;
+  top: 0;
+  z-index: 50;
+  /* Opaque, not translucent: no backdrop blur, no text over moving content. */
+  background: var(--bg);
+  border-bottom: 1px solid var(--border);
+}
+
+.site-header__inner {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-3);
+  padding-block: var(--space-3);
+}
+
+.wordmark {
+  font-family: var(--font-display);
+  font-size: var(--step-1);
+  letter-spacing: -0.01em;
+  text-decoration: none;
+}
+
+.nav__list {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-4);
+  font-size: var(--step--1);
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.nav__list a {
+  text-decoration: none;
+  color: var(--muted);
+  transition: color var(--speed) ease;
+}
+
+.nav__list a:hover {
+  color: var(--text);
+}
+
+.nav__cta {
+  padding: var(--space-2) var(--space-3);
+  border: 1px solid var(--border-strong);
+  color: var(--text) !important;
+  border-radius: var(--radius);
+  transition: background var(--speed) ease, border-color var(--speed) ease;
+}
+
+.nav__cta:hover {
+  background: var(--surface);
+  border-color: var(--accent);
+}
+
+/* The toggle only exists once JS is running; without it the nav stays open. */
+.nav-toggle {
+  display: none;
+  padding: var(--space-2) var(--space-3);
+  background: none;
+  border: 1px solid var(--border-strong);
+  border-radius: var(--radius);
+  color: var(--text);
+  font: inherit;
+  font-size: var(--step--1);
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  cursor: pointer;
+}
+
+/* ---------- Hero ---------- */
+
+.hero {
+  padding-block: var(--space-7) var(--space-7);
+}
+
+.hero__inner {
+  display: grid;
+  gap: var(--space-6);
+  align-items: center;
+}
+
+.hero__heading {
+  margin-top: var(--space-4);
+  font-family: var(--font-display);
+  font-size: var(--step-4);
+  font-weight: 400;
+  line-height: 1.05;
+  letter-spacing: -0.02em;
+  max-width: 20ch;
+}
+
+.hero__lede {
+  margin-top: var(--space-4);
+  max-width: var(--measure);
+  color: var(--muted);
+  font-size: var(--step-1);
+  line-height: 1.6;
+}
+
+.hero__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-3);
+  margin-top: var(--space-5);
+}
+
+.hero__media {
+  border: 1px solid var(--border);
+  background: var(--surface);
+  padding: var(--space-2);
+}
+
+.hero__media img {
+  width: 100%;
+  aspect-ratio: 624 / 811;
+  object-fit: cover;
+}
+
+/* ---------- Badge ---------- */
+
+.badge {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  padding: var(--space-1) var(--space-3);
+  border: 1px solid var(--border-strong);
+  border-radius: 999px;
+  color: var(--muted);
+  font-size: var(--step--1);
+  letter-spacing: 0.02em;
+}
+
+.badge__dot {
+  width: 0.5rem;
+  height: 0.5rem;
+  border-radius: 50%;
+  background: var(--accent);
+}
+
+/* ---------- Buttons ---------- */
+
+.button {
+  display: inline-block;
+  padding: 0.75rem var(--space-4);
+  border: 1px solid transparent;
+  border-radius: var(--radius);
+  font-size: var(--step-0);
+  font-weight: 600;
+  text-decoration: none;
+  cursor: pointer;
+  transition: background var(--speed) ease, border-color var(--speed) ease, color var(--speed) ease;
+}
+
+.button--primary {
+  background: var(--accent);
+  color: var(--accent-ink);
+}
+
+.button--primary:hover {
+  background: var(--text);
+}
+
+.button--ghost {
+  border-color: var(--border-strong);
+  color: var(--text);
+}
+
+.button--ghost:hover {
+  background: var(--surface);
+  border-color: var(--accent);
+}
+
+/* ---------- Work ---------- */
+
+.project {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+
+.project__media {
+  width: 100%;
+  /* Uniform ratio across every card: the grid never jitters. */
+  aspect-ratio: 4 / 3;
+  object-fit: cover;
+  object-position: center top;
+  border: 1px solid var(--border);
+  background: var(--surface);
+  margin-bottom: var(--space-2);
+}
+
+.project__title {
+  font-family: var(--font-display);
+  font-size: var(--step-2);
+  font-weight: 400;
+  line-height: 1.2;
+}
+
+.project__problem {
+  color: var(--muted);
+}
+
+.tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+  margin-top: var(--space-1);
+  font-size: var(--step--1);
+}
+
+.tags li {
+  padding: 0.125rem var(--space-2);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  color: var(--muted);
+}
+
+.project__links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-4);
+  margin-top: var(--space-2);
+  font-size: var(--step--1);
+  letter-spacing: 0.02em;
+}
+
+.project__links a {
+  color: var(--accent);
+  text-decoration: none;
+  border-bottom: 1px solid var(--border-strong);
+  padding-bottom: 2px;
+  transition: border-color var(--speed) ease;
+}
+
+.project__links a:hover {
+  border-color: var(--accent);
+}
+
+/* ---------- Capabilities ---------- */
+
+.capability__title {
+  padding-bottom: var(--space-2);
+  border-bottom: 1px solid var(--border);
+  font-size: var(--step--1);
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--accent);
+}
+
+.capability__list {
+  margin-top: var(--space-3);
+  display: grid;
+  gap: var(--space-2);
+  color: var(--muted);
+}
+
+/* ---------- About ---------- */
+
+.about {
+  display: grid;
+  gap: var(--space-6);
+}
+
+.about__story p {
+  margin-top: var(--space-3);
+  max-width: var(--measure);
+  color: var(--muted);
+  font-size: var(--step-1);
+}
+
+.about__subtitle {
+  margin-bottom: var(--space-3);
+  font-size: var(--step--1);
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--accent);
+}
+
+.about__subtitle + .record {
+  margin-bottom: var(--space-5);
+}
+
+.record dt {
+  color: var(--muted);
+  font-size: var(--step--1);
+  font-variant-numeric: tabular-nums;
+}
+
+.record dd {
+  margin-bottom: var(--space-3);
+  padding-bottom: var(--space-3);
+  border-bottom: 1px solid var(--border);
+}
+
+/* ---------- Contact ---------- */
+
+.section--contact {
+  background: var(--surface);
+}
+
+.contact {
+  display: grid;
+  gap: var(--space-6);
+}
+
+.contact__intro p {
+  margin-top: var(--space-3);
+  max-width: var(--measure);
+  color: var(--muted);
+}
+
+.contact__details {
+  display: grid;
+  gap: var(--space-2);
+  margin-top: var(--space-4);
+}
+
+.contact__details a {
+  color: var(--accent);
+  text-decoration: none;
+  border-bottom: 1px solid var(--border-strong);
+  padding-bottom: 2px;
+}
+
+.contact__details a:hover {
+  border-color: var(--accent);
+}
+
+/* ---------- Form ---------- */
+
+.field {
+  display: grid;
+  gap: var(--space-2);
+  margin-bottom: var(--space-4);
+}
+
+.field label {
+  font-size: var(--step--1);
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+.field input,
+.field textarea {
+  width: 100%;
+  padding: 0.75rem var(--space-3);
+  background: var(--bg);
+  border: 1px solid var(--border-strong);
+  border-radius: var(--radius);
+  color: var(--text);
+  font: inherit;
+  transition: border-color var(--speed) ease;
+}
+
+.field textarea {
+  resize: vertical;
+}
+
+.field input:hover,
+.field textarea:hover {
+  border-color: var(--muted);
+}
+
+.form__status {
+  /* Reserved height: the status message never shifts the layout. */
+  min-height: 1.6em;
+  margin-top: var(--space-2);
+  font-size: var(--step--1);
+}
+
+.form__status[data-state="error"] {
+  color: #f0a89a;
+}
+
+.form__status[data-state="success"] {
+  color: var(--accent);
+}
+
+/* ---------- Footer ---------- */
+
+.site-footer {
+  padding-block: var(--space-5);
+  border-top: 1px solid var(--border);
+  color: var(--muted);
+  font-size: var(--step--1);
+}
+
+.site-footer__inner {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-3);
+  justify-content: space-between;
+}
+
+.site-footer a {
+  color: var(--muted);
+  text-decoration: none;
+}
+
+.site-footer a:hover {
+  color: var(--text);
+}
+
+/* ---------- Responsive ---------- */
+
+@media (max-width: 47.99em) {
+  /* Collapse the nav only when JS can reopen it. */
+  html.js .nav {
+    display: none;
+    flex-basis: 100%;
+  }
+
+  html.js .nav[data-open="true"] {
+    display: block;
+    padding-bottom: var(--space-3);
+  }
+
+  html.js .nav-toggle {
+    display: block;
+  }
+
+  html.js .nav__list {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--space-3);
+  }
+}
+
+@media (min-width: 48em) {
+  .grid--work {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .grid--capabilities {
+    grid-template-columns: repeat(3, 1fr);
+  }
+
+  .about {
+    grid-template-columns: 1.25fr 1fr;
+  }
+
+  .contact {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+@media (min-width: 64em) {
+  .hero__inner {
+    grid-template-columns: 1.15fr 0.85fr;
+  }
+
+  .grid--work {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+/* ---------- Motion ----------
+   Every rule below is scoped to html.js-motion, which main.js adds only when
+   JavaScript runs AND the visitor has not asked for reduced motion. Without
+   that class nothing is hidden, nothing animates, and the page is complete.
+   Only opacity and transform are animated: compositor-only, so motion can
+   never contribute to layout shift. */
+
+:root {
+  --ease-out: cubic-bezier(0.22, 0.61, 0.36, 1);
+  --reveal-distance: 1.25rem;
+  --reveal-duration: 620ms;
+  --stagger: 90ms;
+}
+
+/* Scroll progress indicator: fixed, above the header, zero layout impact. */
+.scroll-progress {
+  display: none;
+}
+
+html.js-motion .scroll-progress {
+  display: block;
+  position: fixed;
+  inset-block-start: 0;
+  inset-inline: 0;
+  z-index: 60;
+  height: 2px;
+  background: var(--accent);
+  transform: scaleX(var(--progress, 0));
+  transform-origin: left center;
+  will-change: transform;
+}
+
+/* Reveal: fade and rise. */
+html.js-motion [data-reveal] {
+  opacity: 0;
+  transform: translate3d(0, var(--reveal-distance), 0);
+}
+
+html.js-motion [data-reveal].is-revealed {
+  opacity: 1;
+  transform: translate3d(0, 0, 0);
+  transition:
+    opacity var(--reveal-duration) var(--ease-out),
+    transform var(--reveal-duration) var(--ease-out);
+  /* --reveal-delay is set per element by main.js to stagger a group. */
+  transition-delay: var(--reveal-delay, 0ms);
+}
+
+/* Media panels travel slightly further, so the hero reads as layered. */
+html.js-motion .hero__media[data-reveal] {
+  --reveal-distance: 2rem;
+}
+
+/* The sticky header gains definition once the page has moved beneath it.
+   Colour only: the header height never changes, so nothing below it shifts. */
+html.js-motion .site-header {
+  transition: border-color var(--speed) ease, background-color var(--speed) ease;
+}
+
+html.js-motion .site-header[data-scrolled="true"] {
+  border-bottom-color: var(--border-strong);
+}
+
+/* Project cards lift on hover: a 2px translate, not a zoom or a glow, so
+   neighbouring cards never reflow and the image never crops differently. */
+html.js-motion .project {
+  transition: transform var(--speed) var(--ease-out);
+}
+
+html.js-motion .project:hover {
+  transform: translate3d(0, -2px, 0);
+}
+
+html.js-motion .project__media {
+  transition: border-color var(--speed) ease;
+}
+
+html.js-motion .project:hover .project__media {
+  border-color: var(--border-strong);
+}
+
+/* ---------- Reduced motion ---------- */
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
