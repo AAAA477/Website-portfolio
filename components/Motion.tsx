@@ -11,7 +11,7 @@ import { useEffect } from "react";
  * Gated twice over: the CSS that hides revealable content applies only under
  * `html.js-motion`, and that class is added only when JavaScript runs and the
  * visitor has not asked for reduced motion. If either is false the page renders
- * complete and static — nothing is ever stranded at opacity 0.
+ * complete and static; nothing is ever stranded at opacity 0.
  */
 export default function Motion() {
   useEffect(() => {
@@ -51,6 +51,9 @@ export default function Motion() {
 
       const progress = document.querySelector<HTMLElement>(".scroll-progress");
       const header = document.querySelector<HTMLElement>(".site-header");
+      const parallaxEls = Array.prototype.slice.call(
+        document.querySelectorAll<HTMLElement>("[data-parallax]"),
+      );
       let ticking = false;
 
       // Read inside rAF so scrolling never forces synchronous layout.
@@ -60,6 +63,19 @@ export default function Motion() {
 
         progress?.style.setProperty("--progress", Math.min(1, Math.max(0, ratio)).toFixed(4));
         header?.setAttribute("data-scrolled", window.scrollY > 8 ? "true" : "false");
+
+        // Small, contained displacement: how far an element's centre sits
+        // from the viewport centre, scaled by its own strength. Reading
+        // getBoundingClientRect here is fine: it's inside rAF, and there are
+        // only ever a handful of parallax elements on the page.
+        const viewportMid = window.innerHeight / 2;
+        parallaxEls.forEach((el) => {
+          const strength = Number(el.dataset.parallax || 12);
+          const rect = el.getBoundingClientRect();
+          const elMid = rect.top + rect.height / 2;
+          const offset = ((viewportMid - elMid) / viewportMid) * strength;
+          el.style.setProperty("--parallax", offset.toFixed(2));
+        });
 
         ticking = false;
       };

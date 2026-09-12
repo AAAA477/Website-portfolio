@@ -10,6 +10,7 @@ export default function Capabilities() {
     >
       <div className="mx-auto w-full max-w-6xl px-6">
         <header data-reveal className="mb-10">
+          <p className="kicker">03 · Under the hood</p>
           <h2
             id="capabilities-heading"
             className="font-display text-h2 leading-tight tracking-tight"
@@ -38,9 +39,14 @@ export default function Capabilities() {
                 >
                   {group.title}
                 </h3>
-                <ul className="mt-4 grid gap-2 text-muted">
+                <ul className="mt-4 flex flex-wrap gap-2">
                   {group.items.map((item) => (
-                    <li key={item}>{item}</li>
+                    <li
+                      key={item}
+                      className="chip rounded-full border border-line px-3 py-1 text-meta text-muted"
+                    >
+                      {item}
+                    </li>
                   ))}
                 </ul>
               </section>

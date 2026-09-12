@@ -79,6 +79,7 @@ export default function Contact() {
     >
       <div className="mx-auto grid w-full max-w-6xl gap-16 px-6 md:grid-cols-2">
         <div data-reveal>
+          <p className="kicker">05 · Let's talk</p>
           <h2 id="contact-heading" className="font-display text-h2 leading-tight tracking-tight">
             Get in touch
           </h2>
@@ -88,18 +89,12 @@ export default function Contact() {
 
           <ul className="mt-6 grid gap-2">
             <li>
-              <a
-                href={`mailto:${site.email}`}
-                className="border-b border-line-strong pb-0.5 text-accent transition-colors hover:border-accent"
-              >
+              <a href={`mailto:${site.email}`} className="link-draw">
                 {site.email}
               </a>
             </li>
             <li>
-              <a
-                href={`tel:${site.phoneHref}`}
-                className="border-b border-line-strong pb-0.5 text-accent transition-colors hover:border-accent"
-              >
+              <a href={`tel:${site.phoneHref}`} className="link-draw">
                 {site.phone}
               </a>
             </li>
@@ -152,7 +147,7 @@ export default function Contact() {
           <button
             type="submit"
             disabled={status.state === "pending"}
-            className="rounded-sm bg-accent px-6 py-3 font-semibold text-accent-ink transition-colors hover:bg-text disabled:opacity-70"
+            className="button-sweep rounded-sm bg-accent px-6 py-3 font-semibold text-accent-ink transition-colors hover:text-text disabled:opacity-70"
           >
             Send message
           </button>

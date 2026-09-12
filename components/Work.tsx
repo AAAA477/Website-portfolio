@@ -7,11 +7,13 @@ import { revealDelay } from "@/lib/motion";
 const TABS = ["Work experience", "Research", "Projects"] as const;
 type Tab = (typeof TABS)[number];
 
+const num = (index: number) => String(index + 1).padStart(2, "0");
+
 function TagList({ tags }: { tags: readonly string[] }) {
   return (
     <ul className="mt-3 flex flex-wrap gap-2 text-meta">
       {tags.map((tag) => (
-        <li key={tag} className="rounded-sm border border-line px-2 py-0.5 text-muted">
+        <li key={tag} className="chip rounded-sm border border-line px-2 py-0.5 text-muted">
           {tag}
         </li>
       ))}
@@ -21,7 +23,7 @@ function TagList({ tags }: { tags: readonly string[] }) {
 
 function EntryHeader({ title, period }: { title: string; period: string }) {
   return (
-    <div className="flex flex-wrap items-baseline justify-between gap-x-4 gap-y-1">
+    <div className="flex flex-wrap items-baseline justify-between gap-x-4 gap-y-1 pr-16">
       <h3 className="font-display text-h3 leading-tight">{title}</h3>
       <p className="text-meta tabular-nums text-muted">{period}</p>
     </div>
@@ -51,11 +53,13 @@ export default function Work() {
     <section id="work" aria-labelledby="work-heading" className="border-t border-line py-24">
       <div className="mx-auto w-full max-w-6xl px-6">
         <header data-reveal className="mb-10">
+          <p className="kicker">02 · What I do</p>
           <h2 id="work-heading" className="font-display text-h2 leading-tight tracking-tight">
             Work
           </h2>
           <p className="mt-2 max-w-[62ch] text-muted">
-            What I get paid to build, what I research, and what I build for myself.
+            What I get paid to build, what I research, and what I build for myself. Use the
+            arrow keys to move between tabs.
           </p>
         </header>
 
@@ -64,7 +68,7 @@ export default function Work() {
           aria-label="Work, research and projects"
           onKeyDown={onKeyDown}
           data-reveal
-          className="mb-8 flex flex-wrap gap-2 border-b border-line"
+          className="mb-10 inline-flex gap-1 rounded-full border border-line bg-surface p-1"
         >
           {TABS.map((tab, index) => {
             const selected = tab === active;
@@ -78,12 +82,10 @@ export default function Work() {
                 aria-controls={`${baseId}-panel-${index}`}
                 tabIndex={selected ? 0 : -1}
                 onClick={() => setActive(tab)}
-                className={`-mb-px border-b-2 px-1 py-3 text-meta uppercase tracking-widest transition-colors ${
-                  selected
-                    ? "border-accent text-text"
-                    : "border-transparent text-muted hover:text-text"
-                }`}
+                className="tab-pill rounded-full px-4 py-2 text-meta font-medium uppercase tracking-widest text-muted data-[selected=true]:text-accent-ink"
+                data-selected={selected}
               >
+                <span aria-hidden="true" className="tab-pill__bg" />
                 {tab}
               </button>
             );
@@ -99,7 +101,15 @@ export default function Work() {
         >
           <ul className="grid gap-10">
             {workExperience.map((entry, index) => (
-              <li key={entry.org} data-reveal style={revealDelay(index)}>
+              <li
+                key={entry.org}
+                data-reveal
+                style={revealDelay(index)}
+                className="entry-card border-t border-line pt-8 first:border-t-0 first:pt-0"
+              >
+                <span aria-hidden="true" className="entry-card__index">
+                  {num(index)}
+                </span>
                 <EntryHeader title={entry.org} period={entry.period} />
                 <p className="text-muted">
                   {entry.role} · {entry.location}
@@ -107,7 +117,7 @@ export default function Work() {
                 <ul className="mt-3 grid gap-2 text-muted">
                   {entry.bullets.map((bullet) => (
                     <li key={bullet.slice(0, 40)} className="pl-4 -indent-4">
-                      — {bullet}
+                      • {bullet}
                     </li>
                   ))}
                 </ul>
@@ -118,12 +128,14 @@ export default function Work() {
 
           {ventures.length > 0 && (
             <div className="mt-14 border-t border-line pt-10">
-              <h3 className="mb-6 text-meta font-semibold uppercase tracking-widest text-accent">
-                Founder ventures
-              </h3>
+              <p className="kicker">Side projects</p>
+              <h3 className="mb-6 font-display text-h3">Founder ventures</h3>
               <ul className="grid gap-6 md:grid-cols-2">
                 {ventures.map((venture) => (
-                  <li key={venture.name} className="border border-line p-5">
+                  <li
+                    key={venture.name}
+                    className="entry-card border border-line p-5"
+                  >
                     <p className="flex items-center justify-between gap-4">
                       <a
                         href={venture.href}
@@ -152,7 +164,15 @@ export default function Work() {
         >
           <ul className="grid gap-10">
             {research.map((entry, index) => (
-              <li key={entry.org} data-reveal style={revealDelay(index)}>
+              <li
+                key={entry.org}
+                data-reveal
+                style={revealDelay(index)}
+                className="entry-card border-t border-line pt-8 first:border-t-0 first:pt-0"
+              >
+                <span aria-hidden="true" className="entry-card__index">
+                  {num(index)}
+                </span>
                 <EntryHeader title={entry.org} period={entry.period} />
                 <p className="text-muted">
                   {entry.role} · {entry.location}
@@ -160,7 +180,7 @@ export default function Work() {
                 <ul className="mt-3 grid gap-2 text-muted">
                   {entry.bullets.map((bullet) => (
                     <li key={bullet.slice(0, 40)} className="pl-4 -indent-4">
-                      — {bullet}
+                      • {bullet}
                     </li>
                   ))}
                 </ul>
@@ -170,7 +190,7 @@ export default function Work() {
                     {entry.recognition.map((item) => (
                       <li
                         key={item}
-                        className="rounded-sm border border-accent/40 px-2 py-0.5 text-accent"
+                        className="chip rounded-sm border border-accent/40 px-2 py-0.5 text-accent"
                       >
                         {item}
                       </li>
@@ -191,32 +211,27 @@ export default function Work() {
         >
           <ul className="grid gap-10 md:grid-cols-2">
             {projects.map((project, index) => (
-              <li key={project.slug} data-reveal style={revealDelay(index)}>
-                <div className="flex flex-wrap items-baseline justify-between gap-x-4 gap-y-1">
+              <li
+                key={project.slug}
+                data-reveal
+                style={revealDelay(index)}
+                className="entry-card border border-line p-6"
+              >
+                <span aria-hidden="true" className="entry-card__index">
+                  {num(index)}
+                </span>
+                <div className="flex flex-wrap items-baseline justify-between gap-x-4 gap-y-1 pr-14">
                   <h3 className="font-display text-h3 leading-tight">{project.title}</h3>
-                  {project.status && (
-                    <span className="text-meta text-muted">{project.status}</span>
-                  )}
                 </div>
-                <p className="mt-2 text-muted">{project.problem}</p>
-                {project.bullets && (
-                  <ul className="mt-3 grid gap-2 text-muted">
-                    {project.bullets.map((bullet) => (
-                      <li key={bullet.slice(0, 40)} className="pl-4 -indent-4">
-                        — {bullet}
-                      </li>
-                    ))}
-                  </ul>
+                {project.status && (
+                  <span className="text-meta text-muted">{project.status}</span>
                 )}
+                <p className="mt-2 text-lead text-muted">{project.story}</p>
                 <TagList tags={project.tags} />
                 {project.links.length > 0 && (
                   <p className="mt-3 flex flex-wrap gap-6 text-meta">
                     {project.links.map((link) => (
-                      <a
-                        key={link.href}
-                        href={link.href}
-                        className="border-b border-line-strong pb-0.5 text-accent transition-colors hover:border-accent"
-                      >
+                      <a key={link.href} href={link.href} className="link-draw">
                         {link.label}
                       </a>
                     ))}

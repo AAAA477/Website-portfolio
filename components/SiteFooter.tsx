@@ -9,7 +9,7 @@ export default function SiteFooter() {
           &copy; {new Date().getFullYear()} {site.name}
         </p>
         <p>
-          <a href="#top" className="transition-colors hover:text-text">
+          <a href="/#top" className="transition-colors hover:text-text">
             Back to top
           </a>
         </p>
