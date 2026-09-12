@@ -4,17 +4,18 @@ import Motion from "@/components/Motion";
 import SiteFooter from "@/components/SiteFooter";
 import SiteHeader from "@/components/SiteHeader";
 import { site } from "@/lib/content";
+import { withBase } from "@/lib/paths";
 import "./globals.css";
 
 export const metadata: Metadata = {
   title: `${site.name} · ${site.role}`,
   description: site.description,
-  icons: { icon: "/images/logo.png" },
+  icons: { icon: withBase("/images/logo.png") },
   openGraph: {
     type: "website",
     title: `${site.name} · ${site.role}`,
     description: site.description,
-    images: [{ url: "/images/hero-headshot.jpg" }],
+    images: [{ url: withBase("/images/hero-headshot.jpg") }],
   },
   twitter: {
     card: "summary_large_image",

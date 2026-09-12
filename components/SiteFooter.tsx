@@ -1,4 +1,5 @@
 import { site } from "@/lib/content";
+import { withBase } from "@/lib/paths";
 
 export default function SiteFooter() {
   return (
@@ -9,7 +10,7 @@ export default function SiteFooter() {
           &copy; {new Date().getFullYear()} {site.name}
         </p>
         <p>
-          <a href="/#top" className="transition-colors hover:text-text">
+          <a href={withBase("/#top")} className="transition-colors hover:text-text">
             Back to top
           </a>
         </p>

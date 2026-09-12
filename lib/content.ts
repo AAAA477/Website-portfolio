@@ -6,6 +6,8 @@
  * this file carries only what's confirmed enough to render.
  */
 
+import { withBase } from "@/lib/paths";
+
 export type Link = {
   label: string;
   href: string;
@@ -61,7 +63,7 @@ export const site = {
   location: "Edmonton, Canada",
   linkedin: "https://linkedin.com/in/andrew-adrian-ansah",
   github: "https://github.com/AAAA477",
-  cv: "/cv-andrew-ansah.pdf",
+  cv: withBase("/cv-andrew-ansah.pdf"),
   description:
     "Andrew Ansah is a computer science student at the University of Alberta working across AI research and software engineering: mechanistic interpretability of language models and full-stack delivery of production web systems.",
   // TODO (CONTENT.md): confirm this is still accurate before publishing.
@@ -72,7 +74,7 @@ export const hero = {
   heading: "I like solving problems, in code and in how models think.",
   lede: "I'm Andrew, a computer science student at the University of Alberta. I split my time between mechanistic interpretability research on language models and shipping full-stack software, and I'm building two ventures of my own on the side.",
   portrait: {
-    src: "/images/hero-headshot.jpg",
+    src: withBase("/images/hero-headshot.jpg"),
     alt: "Portrait of Andrew Adrian Ansah",
     width: 810,
     height: 1080,
@@ -231,7 +233,7 @@ export const capabilities = [
     title: "Tools & testing",
     items: ["Git", "Docker", "GitHub Actions", "Jupyter Notebook", "Vitest", "Playwright"],
   },
-] as const;
+];
 
 export const about = {
   paragraphs: [
@@ -251,7 +253,7 @@ export const about = {
   ],
   /** Graduation photo (NCUK Accra), background removed. A real photo, not a stock image. */
   photo: {
-    src: "/images/photo_2024-05-02_20-49-53-removebg-preview.png",
+    src: withBase("/images/photo_2024-05-02_20-49-53-removebg-preview.png"),
     alt: "Andrew Adrian Ansah in academic regalia at his NCUK Accra graduation",
     width: 408,
     height: 612,
@@ -279,7 +281,7 @@ export const updates: Update[] = [
 ];
 
 export const navLinks = [
-  { label: "Work", href: "/#work" },
-  { label: "About", href: "/#about" },
-  { label: "Updates", href: "/updates/" },
-] as const;
+  { label: "Work", href: withBase("/#work") },
+  { label: "About", href: withBase("/#about") },
+  { label: "Updates", href: withBase("/updates/") },
+];

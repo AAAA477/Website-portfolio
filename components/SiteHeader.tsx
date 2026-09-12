@@ -2,6 +2,7 @@
 
 import { useCallback, useEffect, useRef, useState } from "react";
 import { navLinks, site } from "@/lib/content";
+import { withBase } from "@/lib/paths";
 
 export default function SiteHeader() {
   const [open, setOpen] = useState(false);
@@ -37,7 +38,7 @@ export default function SiteHeader() {
   return (
     <header className="site-header sticky top-0 z-50 border-b border-line bg-bg">
       <div className="mx-auto flex w-full max-w-6xl flex-wrap items-center justify-between gap-4 px-6 py-4">
-        <a href="/#top" className="font-display text-lead tracking-tight">
+        <a href={withBase("/#top")} className="font-display text-lead tracking-tight">
           {site.shortName}
         </a>
 
@@ -71,7 +72,7 @@ export default function SiteHeader() {
             ))}
             <li>
               <a
-                href="/#contact"
+                href={withBase("/#contact")}
                 onClick={close}
                 className="rounded-sm border border-line-strong px-3 py-2 text-text transition-colors hover:border-accent hover:bg-surface"
               >
