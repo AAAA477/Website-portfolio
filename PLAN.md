@@ -4,7 +4,7 @@
 > the end of every working session. Derived from [INTENT.md](INTENT.md).
 > Defects and papercuts live in [ISSUES.md](ISSUES.md), not here.
 
-**Last updated:** 2026-09-12
+**Last updated:** 2026-09-16
 **Current phase:** Phase 1/2 on Next.js — build green, real content wired in, deploy workflow written; browser/keyboard verification still outstanding
 
 ---
@@ -175,6 +175,20 @@ Note this moves **work above about**: a recruiter should hit proof before biogra
 
 Newest first. One entry per working session — this is the memory that makes the
 loop in [CLAUDE.md](CLAUDE.md) work.
+
+### 2026-09-16 — A4 favicon
+
+- **Did:** Replaced the old logo favicon in `app/layout.tsx` with a custom
+  brass-on-charcoal A4 monogram (`public/favicon-a4.svg`), plus a 32px PNG
+  fallback and 180px Apple touch icon. Kept all URLs behind `withBase`.
+- **Learned:** The active site uses Next metadata, and its GitHub Pages
+  sub-path must also prefix favicon URLs. SVG paths keep the mark independent
+  of installed fonts; Chromium rendering was inspected at 16/32/64/128px.
+- **Next:** Deploy through the existing workflow when ready.
+- **Open:** Production build attempted but blocked by a missing Linux Lightning
+  CSS binary in the existing dependency installation (P-039). Restore platform
+  dependencies and rerun the build before deployment. The broader site audit
+  in P-029 remains outside this favicon task.
 
 ### 2026-09-12 — Real content wired in, deploy workflow written
 - **Did:** Created [CONTENT.md](CONTENT.md) as the single source of truth for

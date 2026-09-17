@@ -16,6 +16,7 @@ for things that are *wrong* or *missing*.
 
 | ID | Sev | Area | Issue | Where | Status |
 |---|---|---|---|---|---|
+| P-039 | 🟠 | Build | Local Linux build fails because the installed Lightning CSS native module is missing (`lightningcss.linux-x64-gnu.node`); restore platform dependencies and rerun the build | node_modules (local environment) | open |
 | P-010 | 🟠 | Perf | Images are unoptimised full-size PNGs with no `width`/`height` and no `loading="lazy"` → slow loads and layout shift | images/, index.html | open |
 | P-012 | 🟡 | Assets | [images/](images/) is cluttered: duplicate png/webp pairs, `Add a heading.png`, `Untitled design.png`, `A4-1.png`, `5ecca87d-...(1).png`, `Screenshot 2024-10-13 180736.png` | images/ | open |
 | P-014 | 🟡 | Links | Fitness project points at a Netlify deploy-preview URL (`670c5c29...--thegym123.netlify.app`) rather than the stable site URL | lib/content.ts | open |
@@ -39,6 +40,7 @@ for things that are *wrong* or *missing*.
 
 | ID | Sev | Issue | Fixed | Note |
 |---|---|---|---|---|
+| P-038 | 🟡 | Replace the existing logo favicon with a purpose-built A4 mark | 2026-09-16 | Added a font-independent SVG, 32px PNG fallback and Apple touch icon; inspected Chromium rendering at browser-tab sizes |
 | P-001 | 🔴 | Two portfolio cards are both titled "Social Media App" with near-ident | 2026-09-12 | Duplicate cards replaced with distinct titles and problem statements |
 | P-002 | 🔴 | Dead `href="#"` links: three Services "Learn more", the "See more" but | 2026-09-12 | All href="#" removed; unknown URLs are TODO comments, not dead links |
 | P-003 | 🔴 | Tabs are `<p class="tab-links" onclick=...>` — not focusable, not keyb | 2026-09-12 | Tab widget removed entirely — About is now plain, JS-free content |

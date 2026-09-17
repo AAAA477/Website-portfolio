@@ -10,7 +10,13 @@ import "./globals.css";
 export const metadata: Metadata = {
   title: `${site.name} · ${site.role}`,
   description: site.description,
-  icons: { icon: withBase("/images/logo.png") },
+  icons: {
+    icon: [
+      { url: withBase("/favicon-a4.png"), type: "image/png", sizes: "32x32" },
+      { url: withBase("/favicon-a4.svg"), type: "image/svg+xml", sizes: "any" },
+    ],
+    apple: { url: withBase("/apple-touch-icon.png"), sizes: "180x180" },
+  },
   openGraph: {
     type: "website",
     title: `${site.name} · ${site.role}`,
