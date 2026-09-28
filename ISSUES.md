@@ -39,6 +39,7 @@ for things that are *wrong* or *missing*.
 
 | ID | Sev | Issue | Fixed | Note |
 |---|---|---|---|---|
+| P-040 | 🟠 | SlideRail and SlideCounter rendered globally from the root layout, so their five section links (`#top`, `#work`, …) also showed on `/updates` — a page with no matching anchors | 2026-09-28 | Found while syncing the new theme-color meta tag. Both are now client components gated on `usePathname() === "/"` |
 | P-029 | 🟠 | The cinematic-slideshow refactor passed static checks only; it had not been opened in a browser, keyboard-tested, or run through a real build | 2026-09-28 | Opened in Playwright at 1440px and 375px across all five slides, tabbed through focus order (skip-link, rail, form), checked `prefers-reduced-motion: reduce`, and served the actual static `next build` export at its real GitHub Pages sub-path. Lighthouse itself still not run — no Lighthouse tool available in this environment |
 | P-038 | 🟡 | Replace the existing logo favicon with a purpose-built A4 mark | 2026-09-16 | Added a font-independent SVG, 32px PNG fallback and Apple touch icon; inspected Chromium rendering at browser-tab sizes |
 | P-001 | 🔴 | Two portfolio cards are both titled "Social Media App" with near-ident | 2026-09-12 | Duplicate cards replaced with distinct titles and problem statements |

@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { THEME_BG } from "@/lib/theme";
 
 type Theme = "light" | "dark";
 
@@ -29,6 +30,7 @@ export default function ThemeToggle() {
 
   const toggle = () => {
     document.documentElement.setAttribute("data-theme", next);
+    document.querySelector('meta[name="theme-color"]')?.setAttribute("content", THEME_BG[next]);
     try {
       localStorage.setItem("theme", next);
     } catch {

@@ -177,6 +177,36 @@ Note this moves **work above about**: a recruiter should hit proof before biogra
 Newest first. One entry per working session — this is the memory that makes the
 loop in [CLAUDE.md](CLAUDE.md) work.
 
+### 2026-09-28 (3) — Browser-chrome polish, and a real bug found doing it
+
+- **Did:** Asked "what else for beauty" with imagery off the table, so
+  picked content-independent browser-chrome details: `::selection` tinted
+  gold instead of the default blue, a thin accent-tinted scrollbar
+  (`scrollbar-color` for Firefox, `::-webkit-scrollbar` for Chromium/Safari,
+  both token-driven so they follow the theme), and a `theme-color` meta tag
+  so a phone's address-bar chrome matches the page instead of staying
+  unset. The meta tag has to track the *manual* toggle too, not just system
+  preference, so it's kept in sync from two places: the blocking `<head>`
+  script (before first paint) and `ThemeToggle`'s click handler — both
+  reading the same `lib/theme.ts` constants so the two never drift apart.
+  While wiring the meta sync, went looking for anywhere else theme-related
+  state lived and found a real, pre-existing bug unrelated to today's
+  work: [components/SlideRail.tsx](components/SlideRail.tsx) and
+  [SlideCounter.tsx](components/SlideCounter.tsx) render globally from
+  [layout.tsx](app/layout.tsx), so they were also showing on `/updates` —
+  a page with no `.slide` sections at all, meaning the rail's five links
+  (`#top`, `#work`, …) pointed at anchors that don't exist on that page.
+  Made both client components, gated on `usePathname() === "/"`.
+- **Learned:** A decorative-nav component that renders unconditionally from
+  the root layout is a trap the moment a second route exists — it looked
+  correct for months because the site only had one page with `.slide`s in
+  it until `/updates` was added. Worth checking "does this global component
+  make sense on every route" specifically whenever a new top-level page
+  gets added, rather than only when someone notices it's broken.
+- **Next:** The breakpoint sweep (~360px to ultrawide) is next, per Andrew.
+  Still open after that: real project imagery, P-036's content TODOs, and
+  Lighthouse (no tool for it in this environment).
+
 ### 2026-09-28 (2) — Fixed the broken venture previews, shipped light/dark
 
 - **Did:** Two things, same session. First, Andrew flagged a blank white box
