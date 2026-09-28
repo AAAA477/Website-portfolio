@@ -79,7 +79,7 @@ This is the phase that carries the intent. Take it slowly.
 - [x] Project cards: uniform-ratio thumbnail, problem statement, stack tags, text links
 - [x] Considered motion: entrance choreography, hover states, smooth section transitions
 - [x] Cinematic slideshow structure: five sections as full-viewport slides with scroll-snap, a scroll-driven depth/focus effect, and a slide-index rail
-- [ ] Light/dark theme toggle honouring `prefers-color-scheme`, persisted per visitor
+- [x] Light/dark theme toggle honouring `prefers-color-scheme`, persisted per visitor
 - [ ] Polish every breakpoint from ~360px to ultrawide
 - [ ] Replace stock/placeholder imagery with real assets
 
@@ -176,6 +176,54 @@ Note this moves **work above about**: a recruiter should hit proof before biogra
 
 Newest first. One entry per working session — this is the memory that makes the
 loop in [CLAUDE.md](CLAUDE.md) work.
+
+### 2026-09-28 (2) — Fixed the broken venture previews, shipped light/dark
+
+- **Did:** Two things, same session. First, Andrew flagged a blank white box
+  on the founder-ventures cards — the live `<iframe src={venture.href}>`
+  previews for heavy-spoon.com/instafurnish.shop, both still `"Prelaunch"`
+  in [lib/content.ts](lib/content.ts), rendered empty since there's nothing
+  live to embed (or the target blocks framing). Replaced the iframe with a
+  static monogram + status badge inside the same browser-chrome frame —
+  the `.browser-frame` CSS comment had already called this out as the
+  honest approach ("swap for a real screenshot once one launches") but the
+  markup hadn't caught up. Second, picked up Phase 2's light/dark toggle —
+  Andrew chose it over the breakpoint sweep and the (blocked-on-him) asset
+  replacement. Because every colour in this codebase already routes through
+  the `@theme` custom properties (confirmed by inspecting the compiled CSS:
+  Tailwind v4 emits `.bg-bg{background-color:var(--color-bg)}`, not a
+  literal hex), a light palette is one override block, not a per-component
+  rewrite: `:root[data-theme="light"]` for an explicit choice,
+  `@media (prefers-color-scheme: light)` for an unset one, both defining the
+  same eight tokens against a warm-ivory canvas that keeps the site's own
+  gold-on-charcoal identity rather than going generic black-on-white.
+  Contrast checked by eye against the same three pairings the dark palette's
+  own comment documents (text/muted/accent against bg), all clearing AA.
+  `ThemeToggle.tsx` is a new client component: reads the DOM attribute the
+  blocking `<head>` script (in [layout.tsx](app/layout.tsx)) already set
+  before paint, so there's no flash and no hydration mismatch; renders
+  `null` until mounted rather than a dead button, since the toggle is
+  cosmetic and JS-only by design — everything else already renders
+  correctly in both palettes without JS, via the same media-query fallback.
+  Sits in [SiteHeader.tsx](components/SiteHeader.tsx) next to the mobile
+  menu button, always reachable regardless of nav state.
+- **Learned:** Tailwind v4's `@theme` block is genuinely runtime-themeable,
+  not just a build-time token source — worth remembering next time a
+  "would need per-component changes" feature turns out to be one CSS block
+  because the token architecture was already in place for a different
+  reason (spacing/type consistency, in this case). Also: a disabled/inert
+  button with only an aria-label and no visible glyph reads as broken to a
+  sighted user faster than the element simply not being there — `return
+  null` until hydration beat every alternative I considered for the no-JS
+  case.
+- **Next:** Andrew should react to the light palette specifically — the
+  warm-ivory-over-generic-white choice and the deepened accent (`#7a5f26`
+  vs. dark mode's lighter `#c9a961`, needed for AA text contrast on a light
+  ground) are aesthetic calls worth a second opinion. Phase 2's remaining
+  items are the breakpoint sweep and real project imagery (blocked on
+  Andrew). Lighthouse still hasn't been run in this environment — no tool
+  for it here; worth doing from a machine that has it before calling Phase
+  2 done.
 
 ### 2026-09-28 — Browser-verified the slideshow, then a hiring-manager polish pass
 

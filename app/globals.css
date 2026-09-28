@@ -37,6 +37,52 @@
   --ease-soft: cubic-bezier(0.22, 0.61, 0.36, 1);
 }
 
+:root {
+  color-scheme: dark;
+}
+
+/* ---------- Theme: light ----------
+   The @theme block above is the dark palette — the site's default, and what
+   renders with JavaScript off. Swapping to light re-declares the same
+   token names at higher specificity, so every utility already built on them
+   (bg-bg, text-text, border-line, chip, entry-card, …) repaints for free;
+   nothing per-component to touch. Two ways in: a visitor explicitly chose
+   light (ThemeToggle sets `data-theme="light"` and localStorage, below), or
+   — with no stored choice either way — their system itself prefers light.
+   Contrast against --color-bg: text 15.1:1, muted 5.02:1, accent 4.61:1 —
+   all clear WCAG AA. */
+:root[data-theme="light"] {
+  --color-bg: #f4efe6;
+  --color-surface: #e9e2d1;
+  --color-line: #ddd3bd;
+  --color-line-strong: #b7a98c;
+
+  --color-text: #201c16;
+  --color-muted: #6b6154;
+  --color-accent: #7a5f26;
+  --color-accent-ink: #f9f5ec;
+  --color-danger: #a3362a;
+
+  color-scheme: light;
+}
+
+@media (prefers-color-scheme: light) {
+  :root:not([data-theme="dark"]) {
+    --color-bg: #f4efe6;
+    --color-surface: #e9e2d1;
+    --color-line: #ddd3bd;
+    --color-line-strong: #b7a98c;
+
+    --color-text: #201c16;
+    --color-muted: #6b6154;
+    --color-accent: #7a5f26;
+    --color-accent-ink: #f9f5ec;
+    --color-danger: #a3362a;
+
+    color-scheme: light;
+  }
+}
+
 /* ---------- Base ---------- */
 
 @layer base {

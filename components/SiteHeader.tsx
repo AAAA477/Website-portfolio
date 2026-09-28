@@ -1,6 +1,7 @@
 "use client";
 
 import { useCallback, useEffect, useRef, useState } from "react";
+import ThemeToggle from "@/components/ThemeToggle";
 import { navLinks, site } from "@/lib/content";
 import { withBase } from "@/lib/paths";
 
@@ -42,16 +43,20 @@ export default function SiteHeader() {
           {site.shortName}
         </a>
 
-        <button
-          ref={toggleRef}
-          type="button"
-          aria-expanded={open}
-          aria-controls="primary-nav"
-          onClick={() => setOpen((value) => !value)}
-          className="rounded-sm border border-line-strong px-3 py-2 text-meta uppercase tracking-widest md:hidden"
-        >
-          Menu
-        </button>
+        <div className="flex items-center gap-3 md:order-last">
+          <ThemeToggle />
+
+          <button
+            ref={toggleRef}
+            type="button"
+            aria-expanded={open}
+            aria-controls="primary-nav"
+            onClick={() => setOpen((value) => !value)}
+            className="rounded-sm border border-line-strong px-3 py-2 text-meta uppercase tracking-widest md:hidden"
+          >
+            Menu
+          </button>
+        </div>
 
         <nav
           id="primary-nav"
