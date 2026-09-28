@@ -5,7 +5,7 @@
 > Defects and papercuts live in [ISSUES.md](ISSUES.md), not here.
 
 **Last updated:** 2026-09-28
-**Current phase:** Phase 2 on Next.js — build green, real content wired in, deploy workflow written, cinematic slideshow motion layer added and browser/keyboard-verified; polish pass on top of it done this session
+**Current phase:** Phase 2 complete except for two items blocked on Andrew (real project imagery, P-036's content TODOs). Everything else — type/spacing scale, hero, project cards, motion, the slideshow, light/dark, breakpoint sweep — is done and browser-verified.
 
 ---
 
@@ -80,7 +80,7 @@ This is the phase that carries the intent. Take it slowly.
 - [x] Considered motion: entrance choreography, hover states, smooth section transitions
 - [x] Cinematic slideshow structure: five sections as full-viewport slides with scroll-snap, a scroll-driven depth/focus effect, and a slide-index rail
 - [x] Light/dark theme toggle honouring `prefers-color-scheme`, persisted per visitor
-- [ ] Polish every breakpoint from ~360px to ultrawide
+- [x] Polish every breakpoint from ~360px to ultrawide
 - [ ] Replace stock/placeholder imagery with real assets
 
 **Done when:** someone who doesn't know Andrew says "who built this?"
@@ -176,6 +176,53 @@ Note this moves **work above about**: a recruiter should hit proof before biogra
 
 Newest first. One entry per working session — this is the memory that makes the
 loop in [CLAUDE.md](CLAUDE.md) work.
+
+### 2026-09-28 (4) — Breakpoint sweep: found and fixed a real overflow bug
+
+- **Did:** Swept true 360px through ultrawide (~2560px) with a Playwright
+  browser, checking the hero, the tablet-vs-desktop grid transitions
+  (`sm`=640, `md`=768, `lg`=1024, where the rail toggles on and Capabilities
+  goes 2-col then 4-col), and horizontal-overflow at every stop.
+  **First finding: this tool applies a consistent 1.333× (4:3) scaling to
+  requested viewport sizes** — asking for 768px actually renders 1024px.
+  Confirmed via `window.innerWidth` at several requested sizes before
+  trusting any further measurement, and compensated by requesting
+  width × 0.75 from then on. **Second, and more useful: a real bug.** At
+  true 768px, `document.documentElement.scrollWidth` (766) exceeded
+  `clientWidth` (754) — a genuine, if minor, horizontal scrollbar. Traced it
+  by comparing every `.slide-focus`'s `getBoundingClientRect()`: the
+  cinematic "recede" state (`scale(0.85) translate3d(var(--enter-x), …)`,
+  used for whichever slide isn't centred) pushes an inactive slide's box a
+  few pixels past the right edge at narrower widths — Work's
+  `data-enter="right"` was the worst offender. Harmless to look at (that
+  state is blurred and 22% opacity) but it was genuinely offering sideways
+  scroll. Fixed with `overflow-x: hidden` on `html` — except that alone
+  computed correctly (`getComputedStyle` confirmed `hidden`) but
+  `window.scrollTo(9999, 0)` still moved the viewport, so `body` needed the
+  same rule before `scrollX` actually stayed pinned at 0. Verified 360,
+  640, 768, 1024 (exactly the `lg` boundary — rail correctly appears, no
+  collision with the portrait) and ~2560 all scroll-locked and laid out
+  correctly (P-041).
+  Also hit a real tool artifact, not a site bug: screenshots of any deep-
+  scrolled state (Capabilities, reached by any method — `scrollIntoView`,
+  keyboard `PageDown`, a `#capabilities` URL fragment) came back solid-
+  color blank, while `getBoundingClientRect`/`elementFromPoint` on the same
+  state showed correctly laid-out, `opacity:1` content. One resize call
+  even returned `page.url() === "about:blank"`, confirming a renderer crash
+  behind at least one instance of it. Stopped trusting screenshots for
+  scrolled states this session and used DOM measurement instead, which held
+  up throughout.
+- **Learned:** A tool that resizes a viewport is not proof the page agrees
+  about its own size — always spot-check `window.innerWidth` against the
+  number just asked for before trusting anything measured afterward,
+  especially in an embedded/sandboxed browser. Separately: `overflow-x:
+  hidden` on `html` is not sufficient on its own to stop viewport scroll in
+  every engine — pair it with the same rule on `body`, or check
+  `window.scrollX` after a deliberate `scrollTo`, not just computed style,
+  before believing an overflow fix actually worked.
+- **Next:** Both remaining Phase 2 items depend on Andrew: real project
+  imagery, and P-036's content TODOs. Lighthouse still hasn't run — no tool
+  for it in this environment.
 
 ### 2026-09-28 (3) — Browser-chrome polish, and a real bug found doing it
 

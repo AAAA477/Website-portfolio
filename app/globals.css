@@ -92,10 +92,23 @@
     scroll-padding-top: 5.5rem;
     -webkit-text-size-adjust: 100%;
     text-size-adjust: 100%;
+    /* The slide-focus recede transform (scale + translate, for whichever
+       slide isn't centred) can push an inactive slide's box a handful of
+       pixels past the viewport edge at narrower widths — harmless since
+       that state is blurred and 22% opacity, but it was creating a real,
+       visible horizontal scrollbar. Clipping it here is the standard-safe
+       fix: it can't affect fixed-position chrome (rail, counter, header),
+       only whether an accidental sideways scroll is offered. */
+    overflow-x: hidden;
   }
 
   body {
     position: relative;
+    /* Belt-and-braces with html's overflow-x: hidden above — body has its
+       own default (visible) overflow, and in at least one tested engine
+       that was enough for the viewport to still permit horizontal scroll
+       despite html's rule computing correctly. */
+    overflow-x: hidden;
     background-color: var(--color-bg);
     color: var(--color-text);
     font-family: var(--font-sans);
