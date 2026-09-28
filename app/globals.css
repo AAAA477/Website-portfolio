@@ -141,6 +141,9 @@
 
   html.js-motion .site-header[data-scrolled="true"] {
     border-bottom-color: var(--color-line-strong);
+    background-color: color-mix(in srgb, var(--color-bg) 82%, transparent);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
   }
 
   /* Entry cards (work, research, projects) lift and gain a top accent bar on
@@ -148,8 +151,6 @@
      neighbours never reflow. */
   .entry-card {
     position: relative;
-    /* Clips the numeral watermark below, so it can never bleed past the
-       card's own border the way an unclipped negative offset would. */
     overflow: hidden;
   }
 
@@ -178,25 +179,6 @@
 
   html.js-motion .entry-card:hover::before {
     transform: scaleX(1);
-  }
-
-  /* Oversized, near-invisible numeral watermark inside a card — decorative,
-     so it's aria-hidden at the markup level. Sits inside the card's own
-     padding box (never past its border) and is deliberately cropped at the
-     top-right corner by the card's overflow: hidden, rather than floating
-     free above the content. */
-  .entry-card__index {
-    position: absolute;
-    top: -0.5rem;
-    right: -0.5rem;
-    font-family: var(--font-display);
-    font-size: clamp(2.5rem, 3.5vw, 3.75rem);
-    line-height: 1;
-    color: var(--color-line-strong);
-    opacity: 0.35;
-    pointer-events: none;
-    -webkit-user-select: none;
-    user-select: none;
   }
 
   /* Section eyebrow: a small accent numeral + tracked label ahead of every
@@ -443,6 +425,255 @@
       transform: translateY(-100%);
     }
   }
+}
+
+/* ---------- Slideshow ----------
+   Each top-level section is a slide: near-full-viewport, snapping into
+   place as you scroll, so the page reads as one story told in five acts
+   rather than a document you skim past. min-height (not height) means a
+   slide with more content than fits one screen simply grows — nothing is
+   ever clipped. Snapping itself is motion-adjacent (it can fight a
+   vestibular-sensitive scroller), so it only engages under
+   no-preference, same as everything else on this page. */
+
+.slide {
+  position: relative;
+  min-height: 100dvh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+/* Ghost numeral: an oversized, near-invisible echo of the slide's own
+   kicker number ("02 · What I do" → "02"), anchored low and to the right.
+   Purely decorative type, not a second source of truth — it reinforces the
+   deck's "five acts" structure (already stated by the rail and counter) and
+   gives a shorter slide like Capabilities a reason for its empty lower
+   space instead of that space reading as an accident. Static and low-cost:
+   no motion, so nothing to gate behind prefers-reduced-motion. z-index:auto
+   plus a positioned, later sibling (the slide's content wrapper) is what
+   keeps it behind real content — see components for the pairing. */
+.ghost-numeral {
+  position: absolute;
+  right: clamp(1rem, 4vw, 3rem);
+  bottom: 1rem;
+  line-height: 0.8;
+  font-family: var(--font-display);
+  font-size: clamp(6rem, 14vw, 12rem);
+  color: var(--color-text);
+  opacity: 0.045;
+  pointer-events: none;
+  user-select: none;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  html:has(.slide) {
+    scroll-snap-type: y proximity;
+  }
+
+  .slide {
+    scroll-snap-align: start;
+  }
+}
+
+/* Cinematic depth: every slide starts scaled down, dimmed and slightly
+   soft-focused, offset toward where it's arriving from. Motion.tsx marks
+   the slide nearest the viewport centre .is-active every scroll frame,
+   which is what triggers the transition below — so the effect is a real
+   "arrival" each time you scroll onto a slide, not something tied
+   continuously to scroll position (which never differs from the
+   pre-existing look at rest, and so was invisible in a still screenshot).
+   Inactive slides stay visibly receded the whole time they're not
+   centred. --enter-x/--enter-y set the arrival direction per slide via
+   data-enter below, so the deck doesn't repeat one motion five times. */
+.slide-focus {
+  --enter-x: 0px;
+  --enter-y: 2.5rem;
+  will-change: transform, opacity, filter;
+}
+
+.slide[data-enter="right"] .slide-focus {
+  --enter-x: 5rem;
+  --enter-y: 0px;
+}
+
+.slide[data-enter="left"] .slide-focus {
+  --enter-x: -5rem;
+  --enter-y: 0px;
+}
+
+.slide[data-enter="rise"] .slide-focus {
+  --enter-x: 0px;
+  --enter-y: 4.5rem;
+}
+
+html.js-motion .slide-focus {
+  transform: scale(0.85) translate3d(var(--enter-x), var(--enter-y), 0);
+  opacity: 0.22;
+  filter: blur(6px);
+  transition:
+    transform 900ms var(--ease-soft),
+    opacity 700ms var(--ease-soft),
+    filter 700ms var(--ease-soft);
+}
+
+html.js-motion .slide.is-active .slide-focus {
+  transform: scale(1) translate3d(0, 0, 0);
+  opacity: 1;
+  filter: blur(0);
+}
+
+/* Title wipe: a slide's heading arrives through a widening clip-path, like
+   a title card cutting in, rather than the plain fade the rest of the
+   header uses. Reserved for the four section headings — the hero's h1
+   already has its own word-by-word reveal and doesn't need a second
+   treatment layered on top. */
+html.js-motion .title-wipe {
+  clip-path: inset(0 100% 0 -0.1em);
+}
+
+html.js-motion [data-reveal].is-revealed .title-wipe {
+  clip-path: inset(0 0 0 -0.1em);
+  transition: clip-path 800ms var(--ease-soft) 100ms;
+}
+
+/* Roaming spotlight: one soft accent glow, repositioned per slide by
+   Motion.tsx setting data-spotlight on <html>. Reads as a stage light
+   finding the current point rather than a fixed decoration — z-index -1
+   keeps it behind every slide's own background and content. */
+.spotlight {
+  position: fixed;
+  top: 20%;
+  left: 78%;
+  z-index: -1;
+  width: 34rem;
+  height: 34rem;
+  border-radius: 50%;
+  background-color: var(--color-accent);
+  opacity: 0.1;
+  filter: blur(90px);
+  transform: translate(-50%, -50%);
+  pointer-events: none;
+}
+
+html.js-motion .spotlight {
+  transition:
+    top 900ms var(--ease-soft),
+    left 900ms var(--ease-soft);
+}
+
+html[data-spotlight="work"] .spotlight {
+  top: 28%;
+  left: 12%;
+}
+
+html[data-spotlight="capabilities"] .spotlight {
+  top: 72%;
+  left: 82%;
+}
+
+html[data-spotlight="about"] .spotlight {
+  top: 22%;
+  left: 18%;
+}
+
+html[data-spotlight="contact"] .spotlight {
+  top: 68%;
+  left: 60%;
+}
+
+/* Slide counter: the deck's page number, bottom-left, updated by
+   Motion.tsx alongside the rail. Decorative echo of real position — the
+   rail's links are the accessible way to navigate — so it's aria-hidden. */
+.slide-counter {
+  position: fixed;
+  left: 1.5rem;
+  bottom: 1.25rem;
+  z-index: 40;
+  display: flex;
+  align-items: baseline;
+  gap: 0.3rem;
+  font-family: var(--font-display);
+  color: var(--color-muted);
+}
+
+.slide-counter__current {
+  font-size: 1.375rem;
+  color: var(--color-text);
+}
+
+.slide-counter__total {
+  font-size: var(--text-meta);
+}
+
+/* Below sm, the counter sits too close to the hero's CV button to read as
+   intentional. The rail (real wayfinding) already recedes below lg; this
+   decorative echo recedes earlier still, since it has no function of its
+   own to preserve. */
+@media (max-width: 39.99rem) {
+  .slide-counter {
+    display: none;
+  }
+}
+
+/* Slide rail: a presentation's outline, docked to the right edge. Ticks
+   are functional wayfinding for a page that genuinely is five slides, not
+   decoration — the same reasoning that already justifies the numbered
+   kickers on each section. */
+.slide-rail {
+  position: fixed;
+  right: 1.5rem;
+  top: 50%;
+  z-index: 40;
+  transform: translateY(-50%);
+}
+
+.slide-rail__link {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  color: var(--color-muted);
+  text-decoration: none;
+}
+
+.slide-rail__tick {
+  width: 1.25rem;
+  height: 2px;
+  background-color: var(--color-line-strong);
+}
+
+html.js-motion .slide-rail__tick {
+  transition: background-color 240ms ease, width 240ms var(--ease-soft);
+}
+
+.slide-rail__label {
+  font-size: var(--text-meta);
+  opacity: 0;
+  max-width: 0;
+  overflow: hidden;
+  white-space: nowrap;
+}
+
+html.js-motion .slide-rail__label {
+  transition: opacity 200ms ease;
+}
+
+.slide-rail__link:hover .slide-rail__label,
+.slide-rail__link:focus-visible .slide-rail__label,
+.slide-rail__link.is-current .slide-rail__label {
+  opacity: 1;
+  max-width: 8rem;
+}
+
+.slide-rail__link:hover .slide-rail__tick,
+.slide-rail__link:focus-visible .slide-rail__tick,
+.slide-rail__link.is-current .slide-rail__tick {
+  width: 2rem;
+  background-color: var(--color-accent);
+}
+
+.slide-rail__link.is-current {
+  color: var(--color-text);
 }
 
 /* ---------- Reduced motion ---------- */

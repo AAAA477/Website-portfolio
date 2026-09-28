@@ -4,11 +4,23 @@ import { revealDelay } from "@/lib/motion";
 
 export default function About() {
   return (
-    <section id="about" aria-labelledby="about-heading" className="border-t border-line py-24">
-      <div className="mx-auto grid w-full max-w-6xl gap-16 px-6 md:grid-cols-[1.25fr_1fr]">
+    <section
+      id="about"
+      aria-labelledby="about-heading"
+      data-enter="rise"
+      className="slide border-t border-line py-24"
+    >
+      <span className="ghost-numeral" aria-hidden="true">
+        04
+      </span>
+
+      <div className="slide-focus relative mx-auto grid w-full max-w-6xl gap-16 px-6 md:grid-cols-[1.25fr_1fr]">
         <div data-reveal>
           <p className="kicker">04 · Who's asking</p>
-          <h2 id="about-heading" className="font-display text-h2 leading-tight tracking-tight">
+          <h2
+            id="about-heading"
+            className="title-wipe font-display text-h2 leading-tight tracking-tight"
+          >
             About
           </h2>
           {about.paragraphs.map((paragraph) => (

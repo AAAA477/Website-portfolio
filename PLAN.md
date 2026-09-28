@@ -4,8 +4,8 @@
 > the end of every working session. Derived from [INTENT.md](INTENT.md).
 > Defects and papercuts live in [ISSUES.md](ISSUES.md), not here.
 
-**Last updated:** 2026-09-16
-**Current phase:** Phase 1/2 on Next.js — build green, real content wired in, deploy workflow written; browser/keyboard verification still outstanding
+**Last updated:** 2026-09-28
+**Current phase:** Phase 2 on Next.js — build green, real content wired in, deploy workflow written, cinematic slideshow motion layer added and browser/keyboard-verified; polish pass on top of it done this session
 
 ---
 
@@ -77,7 +77,8 @@ This is the phase that carries the intent. Take it slowly.
 - [x] Establish a real type scale and spacing scale as CSS custom properties
 - [x] Hero rebuilt as a 2-column editorial layout with availability badge
 - [x] Project cards: uniform-ratio thumbnail, problem statement, stack tags, text links
-- [ ] Considered motion: entrance choreography, hover states, smooth section transitions
+- [x] Considered motion: entrance choreography, hover states, smooth section transitions
+- [x] Cinematic slideshow structure: five sections as full-viewport slides with scroll-snap, a scroll-driven depth/focus effect, and a slide-index rail
 - [ ] Light/dark theme toggle honouring `prefers-color-scheme`, persisted per visitor
 - [ ] Polish every breakpoint from ~360px to ultrawide
 - [ ] Replace stock/placeholder imagery with real assets
@@ -175,6 +176,131 @@ Note this moves **work above about**: a recruiter should hit proof before biogra
 
 Newest first. One entry per working session — this is the memory that makes the
 loop in [CLAUDE.md](CLAUDE.md) work.
+
+### 2026-09-28 — Browser-verified the slideshow, then a hiring-manager polish pass
+
+- **Did:** Andrew asked to "redesign it to look better," left the direction
+  to discretion, and framed the bar as "what would impress a hiring manager."
+  Before touching anything, actually opened the (still-uncommitted) cinematic
+  slideshow work from 2026-09-17 in a real browser for the first time —
+  Playwright at 1440px and 375px across all five slides — which P-029 had
+  flagged as never done. It held up well; the deck concept (rail + counter +
+  numbered kickers) is genuinely strong. Found three real gaps instead of
+  redesigning from scratch: (1) the Capabilities slide had a large dead zone
+  above its content because centered-slide layout plus shorter copy reads as
+  an accident, not a choice; (2) the Work-tab panels were visually
+  inconsistent — Projects got a bordered card, Work-experience/Research got
+  bare text with a top rule, so switching tabs changed the visual system, not
+  just the content; (3) at 375px the decorative slide-counter sat almost on
+  top of the "Download CV" button. Fixed by: adding `.ghost-numeral`, a huge
+  near-invisible serif echo of each slide's own kicker number (01–05),
+  anchored bottom-right and behind content — static CSS, no motion, so
+  nothing to gate behind `prefers-reduced-motion` — which gives Capabilities'
+  empty space a reason to exist and reinforces the "five acts" identity the
+  rail already states; unifying all three Work-tab panels onto the same
+  `border + bg-surface/40 + p-6 md:p-8` card so the tab control feels like it
+  switches data, not layout systems; hiding `.slide-counter` below the `sm`
+  breakpoint (640px), one step earlier than the rail's existing `lg` cutoff,
+  since it's pure decoration with no wayfinding job to preserve; and adding a
+  translucent `backdrop-filter: blur` to the header once scrolled, for a
+  touch more depth than the previous flat colour swap. Also fixed the
+  `.slide` stacking so the ghost numeral (an early, `position:absolute`
+  sibling) reliably sits behind each slide's content (a later sibling made
+  `relative`) rather than on top of it — a real CSS stacking-order rule, not
+  a hack: positioned elements with `z-index:auto` stack by tree order among
+  themselves, but *above* any unpositioned in-flow sibling regardless of DOM
+  order, so the content wrapper had to become positioned too for DOM order to
+  decide the outcome. Verified via `npx tsc --noEmit`, `npm run build`
+  (static export, which also succeeded — P-039's Lightning CSS gap is
+  confirmed environment-specific, not a real blocker on this machine), then
+  serving `out/` at its real GitHub Pages sub-path and re-checking every
+  slide, a full keyboard tab pass (skip-link, focus rings), and
+  `prefers-reduced-motion: reduce` (content stays fully visible, ghost
+  numerals unaffected since they were never animated).
+- **Learned:** A dev-server hot-reload session on this Windows machine threw
+  intermittent 500s (`SyntaxError: Unexpected end of JSON input` from a
+  Next.js dev-cache file, plus a run of failed `?_rsc=` prefetches) purely
+  from rapid successive edits — unrelated to any code change here. The
+  production static build never showed it. Worth treating dev-server 500s as
+  suspect-the-tool-first when `tsc` and `next build` both stay clean, rather
+  than chasing them as app bugs. Also: two `python -m http.server` processes
+  can silently double-bind the same port on Windows and answer requests
+  nondeterministically (some 200, some 404) — `netstat -ano` plus killing by
+  PID, not just `pkill`, was what actually cleared it. And: in CSS,
+  "put the decorative element first in the DOM" is not sufficient to keep it
+  visually behind real content unless both elements are positioned — worth
+  remembering before reaching for `z-index` as a first resort.
+- **Next:** Andrew should look at this in his own browser and react to the
+  ghost-numeral treatment specifically — it's a genuine style choice, not a
+  bug fix, and the one piece of this pass most worth a second opinion. Phase
+  2's other two open items (light/dark toggle, a full breakpoint sweep past
+  375/1440px) are still outstanding and deliberately weren't bundled in here
+  to keep this diff reviewable. P-036's content TODOs (venture descriptions,
+  repo/live links, program dates) remain the biggest gap between this site
+  and a finished portfolio.
+
+### 2026-09-17 — Slideshow motion, corrected after first pass looked unchanged
+
+- **Did:** Andrew reported the first version of the slideshow effect (below)
+  "doesn't look any different" and separately flagged the entry-card numeral
+  watermark as ugly on its own. Root cause of the first complaint: the depth
+  effect was bound continuously to scroll position, so a *centred, at-rest*
+  slide always sat at scale(1)/opacity(1) — identical to before the change —
+  and a still screenshot can never show a scroll-transient effect. Replaced
+  it with a real discrete state: every slide starts scaled down (0.82),
+  dimmed (opacity 0.25) and soft-blurred (6px), and only reaches full
+  scale/opacity/sharpness once an `IntersectionObserver` (threshold 0.55,
+  never unobserved) marks it `.is-active` — so any slide not currently
+  centred stays visibly receded the whole time, not just mid-scroll, and the
+  transition (900ms/700ms, `--ease-soft`) fires freshly each time you scroll
+  onto it. Also removed `.entry-card__index` entirely (the oversized numeral
+  on Work/Research/Project cards, plus its 3 JSX usages and the `num()`
+  helper) per direct feedback that it read as pointless on its own.
+- **Learned:** A scroll-position-driven effect and a state-driven (enter/exit
+  transition) effect look identical while actively scrolling but completely
+  different in a static screenshot — worth defaulting to state-driven for
+  anything meant to be *seen*, not just felt, and checking a still frame
+  mentally before assuming "it animates" is enough.
+- **Next:** Still needs the real-browser pass described below — this
+  correction hasn't been screenshotted either, for the same tooling reason.
+
+### 2026-09-17 — Cinematic slideshow structure
+
+- **Did:** Turned the five top-level sections (Hero, Work, Capabilities,
+  About, Contact) into a scroll-snapping "slideshow": each is now a
+  near-full-viewport `.slide` with `scroll-snap-align`, plus a continuous
+  scroll-driven depth effect (`--focus` written every rAF frame in
+  [Motion.tsx](components/Motion.tsx), consumed by `.slide-focus` in
+  [globals.css](app/globals.css)) so the in-view slide reads full-size while
+  neighbours recede slightly — a cinematic version of the deck's existing
+  hover/reveal language, not a new visual system. Added
+  [SlideRail.tsx](components/SlideRail.tsx), a fixed right-edge outline (five
+  real anchor links, current one highlighted by the same rAF loop) — a
+  presentation's slide index, justified because the content genuinely is five
+  slides, matching the numbered kickers ("01 · …" through "05 · …") already on
+  each section. All of it is layered onto the existing `html.js-motion` /
+  `prefers-reduced-motion` gates: snap only engages under no-preference,
+  content never depends on JS or motion to be reachable, `min-height` (not
+  `height`) means nothing clips if a slide's content exceeds one viewport.
+  `npx tsc --noEmit` and `npm run build` (static export) both pass on this
+  Windows machine.
+- **Learned:** The kicker numbering already established "five acts" as the
+  site's implicit structure — the slideshow treatment formalizes something
+  the design already implied rather than inventing new content shape. Also:
+  `npm run build` succeeds locally on Windows, so P-039 (missing Linux
+  Lightning CSS binary) is specific to that one environment, not a general
+  build blocker.
+- **Next:** **This has not been looked at in a real browser** — no working
+  screenshot/browser tool was available in this session (the Playwright MCP
+  connection timed out). Before trusting this, Andrew should open the dev
+  server himself and check: does the depth/scale effect feel cinematic or
+  distracting at real scroll speed; does scroll-snap feel right on a trackpad
+  vs. a mouse wheel vs. touch; does the rail overlap anything at in-between
+  widths (it's `lg:` and up only right now); and a full keyboard pass (rail
+  links, tab order across five now-taller slides) plus a
+  `prefers-reduced-motion: reduce` pass (should fall back to a plain
+  scrolling page with no snap and no depth effect). P-029's browser
+  verification gap now extends to this feature specifically.
 
 ### 2026-09-16 — A4 favicon
 

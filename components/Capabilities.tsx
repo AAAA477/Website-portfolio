@@ -6,14 +6,19 @@ export default function Capabilities() {
     <section
       id="capabilities"
       aria-labelledby="capabilities-heading"
-      className="border-t border-line py-24"
+      data-enter="left"
+      className="slide border-t border-line py-24"
     >
-      <div className="mx-auto w-full max-w-6xl px-6">
+      <span className="ghost-numeral" aria-hidden="true">
+        03
+      </span>
+
+      <div className="slide-focus relative mx-auto w-full max-w-6xl px-6">
         <header data-reveal className="mb-10">
           <p className="kicker">03 · Under the hood</p>
           <h2
             id="capabilities-heading"
-            className="font-display text-h2 leading-tight tracking-tight"
+            className="title-wipe font-display text-h2 leading-tight tracking-tight"
           >
             Capabilities and tech stack
           </h2>

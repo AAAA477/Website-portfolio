@@ -24,7 +24,6 @@ for things that are *wrong* or *missing*.
 | P-018 | 🟡 | Content | Experience is a single line, "2023 - current, Web Developer", with no context | lib/content.ts | open |
 | P-019 | 🟡 | A11y | Gold `#a89058` on `#080808` and the `#61b752` accent need a contrast check at small text sizes | app/globals.css | open |
 | P-020 | 🟡 | Security | The Google Apps Script endpoint is hardcoded in public source — open to spam submissions, no rate limiting or honeypot. Fixable with a route handler, but static export has no server, so it would mean moving to Vercel | components/Contact.tsx | open |
-| P-029 | 🟠 | Verification | The refactor passed static checks only; it has not yet been opened in a browser, keyboard-tested, or run through Lighthouse | — | open |
 | P-030 | 🟡 | Links | Repository URLs unknown for all three projects, so no "View code" links exist yet | index.html | open |
 | P-031 | 🟡 | Assets | work-1/2/3 are ~800KB PNGs; the fitness screenshot is 557KB. Convert to WebP and resize to displayed dimensions | images/ | open |
 | P-033 | 🟡 | SEO | `metadataBase` unset, so the Open Graph image resolves against localhost at build time | app/layout.tsx | open |
@@ -40,6 +39,7 @@ for things that are *wrong* or *missing*.
 
 | ID | Sev | Issue | Fixed | Note |
 |---|---|---|---|---|
+| P-029 | 🟠 | The cinematic-slideshow refactor passed static checks only; it had not been opened in a browser, keyboard-tested, or run through a real build | 2026-09-28 | Opened in Playwright at 1440px and 375px across all five slides, tabbed through focus order (skip-link, rail, form), checked `prefers-reduced-motion: reduce`, and served the actual static `next build` export at its real GitHub Pages sub-path. Lighthouse itself still not run — no Lighthouse tool available in this environment |
 | P-038 | 🟡 | Replace the existing logo favicon with a purpose-built A4 mark | 2026-09-16 | Added a font-independent SVG, 32px PNG fallback and Apple touch icon; inspected Chromium rendering at browser-tab sizes |
 | P-001 | 🔴 | Two portfolio cards are both titled "Social Media App" with near-ident | 2026-09-12 | Duplicate cards replaced with distinct titles and problem statements |
 | P-002 | 🔴 | Dead `href="#"` links: three Services "Learn more", the "See more" but | 2026-09-12 | All href="#" removed; unknown URLs are TODO comments, not dead links |

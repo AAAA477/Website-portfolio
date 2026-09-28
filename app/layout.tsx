@@ -3,6 +3,8 @@ import type { ReactNode } from "react";
 import Motion from "@/components/Motion";
 import SiteFooter from "@/components/SiteFooter";
 import SiteHeader from "@/components/SiteHeader";
+import SlideCounter from "@/components/SlideCounter";
+import SlideRail from "@/components/SlideRail";
 import { site } from "@/lib/content";
 import { withBase } from "@/lib/paths";
 import "./globals.css";
@@ -45,6 +47,8 @@ export default function RootLayout({ children }: { children: ReactNode }) {
         </a>
         <Motion />
         <SiteHeader />
+        <SlideRail />
+        <SlideCounter />
         {children}
         <SiteFooter />
       </body>

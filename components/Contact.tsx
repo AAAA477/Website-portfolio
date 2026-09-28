@@ -75,12 +75,20 @@ export default function Contact() {
     <section
       id="contact"
       aria-labelledby="contact-heading"
-      className="border-t border-line bg-surface py-24"
+      data-enter="rise"
+      className="slide border-t border-line bg-surface py-24"
     >
-      <div className="mx-auto grid w-full max-w-6xl gap-16 px-6 md:grid-cols-2">
+      <span className="ghost-numeral" aria-hidden="true">
+        05
+      </span>
+
+      <div className="slide-focus relative mx-auto grid w-full max-w-6xl gap-16 px-6 md:grid-cols-2">
         <div data-reveal>
           <p className="kicker">05 · Let's talk</p>
-          <h2 id="contact-heading" className="font-display text-h2 leading-tight tracking-tight">
+          <h2
+            id="contact-heading"
+            className="title-wipe font-display text-h2 leading-tight tracking-tight"
+          >
             Get in touch
           </h2>
           <p className="mt-4 max-w-[62ch] text-muted">

@@ -5,8 +5,13 @@ import { useEffect } from "react";
 /**
  * Progressive-enhancement motion layer.
  *
- * Renders only the scroll progress bar. Everything else it does is attach
- * behaviour to elements that already carry `data-reveal`.
+ * Renders the scroll progress bar and the roaming spotlight. Everything
+ * else it does is attach behaviour to elements that already exist in the
+ * DOM: `[data-reveal]` fade-ups, `[data-parallax]` displacement, and which
+ * `.slide` currently sits nearest the viewport centre — which in turn
+ * drives that slide's recede/arrive state, the rail's current link, the
+ * page-number counter, and the spotlight's position, all from one measure
+ * per scroll frame rather than four separate observers.
  *
  * Gated twice over: the CSS that hides revealable content applies only under
  * `html.js-motion`, and that class is added only when JavaScript runs and the
@@ -54,6 +59,13 @@ export default function Motion() {
       const parallaxEls = Array.prototype.slice.call(
         document.querySelectorAll<HTMLElement>("[data-parallax]"),
       );
+      const slides = Array.prototype.slice.call(
+        document.querySelectorAll<HTMLElement>(".slide"),
+      ) as HTMLElement[];
+      const railLinks = Array.prototype.slice.call(
+        document.querySelectorAll<HTMLAnchorElement>(".slide-rail__link"),
+      ) as HTMLAnchorElement[];
+      const counter = document.querySelector<HTMLElement>(".slide-counter__current");
       let ticking = false;
 
       // Read inside rAF so scrolling never forces synchronous layout.
@@ -77,6 +89,38 @@ export default function Motion() {
           el.style.setProperty("--parallax", offset.toFixed(2));
         });
 
+        // Whichever slide's centre is closest to the viewport centre is
+        // "the" current slide — everything below reads off that one index.
+        let nearestIndex = 0;
+        let nearestDistance = Infinity;
+        slides.forEach((slide, index) => {
+          const rect = slide.getBoundingClientRect();
+          const mid = rect.top + rect.height / 2;
+          const distance = Math.abs(viewportMid - mid);
+          if (distance < nearestDistance) {
+            nearestDistance = distance;
+            nearestIndex = index;
+          }
+        });
+
+        const current = slides[nearestIndex];
+
+        slides.forEach((slide, index) => {
+          slide.classList.toggle("is-active", index === nearestIndex);
+        });
+
+        railLinks.forEach((link) => {
+          link.classList.toggle("is-current", link.dataset.slide === current?.id);
+        });
+
+        if (counter) {
+          counter.textContent = String(nearestIndex + 1).padStart(2, "0");
+        }
+
+        if (current && root.getAttribute("data-spotlight") !== current.id) {
+          root.setAttribute("data-spotlight", current.id);
+        }
+
         ticking = false;
       };
 
@@ -99,7 +143,10 @@ export default function Motion() {
       observer = null;
       detachScroll?.();
       detachScroll = null;
-      // Anything mid-reveal stays visible rather than stranded.
+      // Anything mid-reveal stays visible rather than stranded. The
+      // recede/spotlight/counter styling is scoped to html.js-motion,
+      // which is now gone, so leaving their classes/attributes as-is
+      // doesn't matter — none of it renders without that class.
       revealAll();
     };
 
@@ -128,5 +175,54 @@ export default function Motion() {
     };
   }, []);
 
-  return <div className="scroll-progress" aria-hidden="true" />;
+  // Keyboard advance: a presentation clicker. Down/PageDown/Space moves to
+  // the next slide, Up/PageUp to the previous — independent of the motion
+  // preference above, since this is navigation, not decoration; only the
+  // scroll itself (smooth vs. instant) respects prefers-reduced-motion.
+  // Left/Right are deliberately not mapped here: Work's tablist already
+  // uses them to switch tabs, and this must never fight that.
+  useEffect(() => {
+    const calm = window.matchMedia("(prefers-reduced-motion: reduce)");
+    const forward = new Set(["ArrowDown", "PageDown", " "]);
+    const backward = new Set(["ArrowUp", "PageUp"]);
+
+    const onKeyDown = (event: KeyboardEvent) => {
+      if (event.metaKey || event.ctrlKey || event.altKey) return;
+
+      const target = event.target as HTMLElement | null;
+      const tag = target?.tagName;
+      if (tag === "INPUT" || tag === "TEXTAREA" || tag === "SELECT" || target?.isContentEditable) {
+        return;
+      }
+
+      const direction = forward.has(event.key) ? 1 : backward.has(event.key) ? -1 : 0;
+      if (direction === 0) return;
+
+      const slides = Array.from(document.querySelectorAll<HTMLElement>(".slide"));
+      if (slides.length === 0) return;
+
+      const viewportMid = window.innerHeight / 2;
+      const currentIndex = slides.reduce((closest, slide, index) => {
+        const rect = slide.getBoundingClientRect();
+        const distance = Math.abs(viewportMid - (rect.top + rect.height / 2));
+        return distance < closest.distance ? { index, distance } : closest;
+      }, { index: 0, distance: Infinity }).index;
+
+      const next = slides[currentIndex + direction];
+      if (!next) return;
+
+      event.preventDefault();
+      next.scrollIntoView({ behavior: calm.matches ? "auto" : "smooth", block: "start" });
+    };
+
+    window.addEventListener("keydown", onKeyDown);
+    return () => window.removeEventListener("keydown", onKeyDown);
+  }, []);
+
+  return (
+    <>
+      <div className="scroll-progress" aria-hidden="true" />
+      <div className="spotlight" aria-hidden="true" />
+    </>
+  );
 }

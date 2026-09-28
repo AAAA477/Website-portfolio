@@ -7,8 +7,6 @@ import { revealDelay } from "@/lib/motion";
 const TABS = ["Work experience", "Research", "Projects"] as const;
 type Tab = (typeof TABS)[number];
 
-const num = (index: number) => String(index + 1).padStart(2, "0");
-
 function TagList({ tags }: { tags: readonly string[] }) {
   return (
     <ul className="mt-3 flex flex-wrap gap-2 text-meta">
@@ -50,11 +48,23 @@ export default function Work() {
   };
 
   return (
-    <section id="work" aria-labelledby="work-heading" className="border-t border-line py-24">
-      <div className="mx-auto w-full max-w-6xl px-6">
+    <section
+      id="work"
+      aria-labelledby="work-heading"
+      data-enter="right"
+      className="slide border-t border-line py-24"
+    >
+      <span className="ghost-numeral" aria-hidden="true">
+        02
+      </span>
+
+      <div className="slide-focus relative mx-auto w-full max-w-6xl px-6">
         <header data-reveal className="mb-10">
           <p className="kicker">02 · What I do</p>
-          <h2 id="work-heading" className="font-display text-h2 leading-tight tracking-tight">
+          <h2
+            id="work-heading"
+            className="title-wipe font-display text-h2 leading-tight tracking-tight"
+          >
             Work
           </h2>
           <p className="mt-2 max-w-[62ch] text-muted">
@@ -99,17 +109,14 @@ export default function Work() {
           aria-labelledby={`${baseId}-tab-0`}
           hidden={active !== "Work experience"}
         >
-          <ul className="grid gap-10">
+          <ul className="grid gap-6">
             {workExperience.map((entry, index) => (
               <li
                 key={entry.org}
                 data-reveal
                 style={revealDelay(index)}
-                className="entry-card border-t border-line pt-8 first:border-t-0 first:pt-0"
+                className="entry-card border border-line bg-surface/40 p-6 md:p-8"
               >
-                <span aria-hidden="true" className="entry-card__index">
-                  {num(index)}
-                </span>
                 <EntryHeader title={entry.org} period={entry.period} />
                 <p className="text-muted">
                   {entry.role} · {entry.location}
@@ -178,17 +185,14 @@ export default function Work() {
           aria-labelledby={`${baseId}-tab-1`}
           hidden={active !== "Research"}
         >
-          <ul className="grid gap-10">
+          <ul className="grid gap-6">
             {research.map((entry, index) => (
               <li
                 key={entry.org}
                 data-reveal
                 style={revealDelay(index)}
-                className="entry-card border-t border-line pt-8 first:border-t-0 first:pt-0"
+                className="entry-card border border-line bg-surface/40 p-6 md:p-8"
               >
-                <span aria-hidden="true" className="entry-card__index">
-                  {num(index)}
-                </span>
                 <EntryHeader title={entry.org} period={entry.period} />
                 <p className="text-muted">
                   {entry.role} · {entry.location}
@@ -225,12 +229,9 @@ export default function Work() {
                 key={project.slug}
                 data-reveal
                 style={revealDelay(index)}
-                className="entry-card border border-line p-6"
+                className="entry-card border border-line bg-surface/40 p-6 md:p-8"
               >
-                <span aria-hidden="true" className="entry-card__index">
-                  {num(index)}
-                </span>
-                <div className="flex flex-wrap items-baseline justify-between gap-x-4 gap-y-1 pr-14">
+                <div className="flex flex-wrap items-baseline justify-between gap-x-4 gap-y-1">
                   <h3 className="font-display text-h3 leading-tight">{project.title}</h3>
                 </div>
                 {project.status && (

@@ -6,14 +6,21 @@ export default function Hero() {
   const words = hero.heading.split(" ");
 
   return (
-    <section id="top" aria-labelledby="hero-heading" className="relative overflow-hidden py-24">
+    <section
+      id="top"
+      aria-labelledby="hero-heading"
+      className="slide relative overflow-hidden py-24"
+    >
       {/* Soft accent halo, contained to the hero, not an ambient page glow. */}
       <div
         aria-hidden="true"
         className="pointer-events-none absolute -right-40 -top-40 size-[32rem] rounded-full bg-accent/10 blur-3xl"
       />
+      <span className="ghost-numeral" aria-hidden="true">
+        01
+      </span>
 
-      <div className="relative mx-auto grid w-full max-w-6xl items-center gap-16 px-6 lg:grid-cols-[1.15fr_0.85fr]">
+      <div className="slide-focus relative mx-auto grid w-full max-w-6xl items-center gap-16 px-6 lg:grid-cols-[1.15fr_0.85fr]">
         <div>
           <p
             data-reveal
