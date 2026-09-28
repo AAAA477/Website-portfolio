@@ -157,15 +157,11 @@ export default function Work() {
                           <span aria-hidden="true" className="browser-frame__dot" />
                           <span className="browser-frame__url">{venture.name}</span>
                         </span>
-                        <span className="browser-frame__embed">
-                          <iframe
-                            src={venture.href}
-                            title={`Live preview of ${venture.name}`}
-                            loading="lazy"
-                            sandbox="allow-scripts allow-same-origin"
-                            tabIndex={-1}
-                            aria-hidden="true"
-                          />
+                        <span className="browser-frame__embed" aria-hidden="true">
+                          <span className="browser-frame__mark">
+                            {venture.name.charAt(0).toUpperCase()}
+                          </span>
+                          <span className="browser-frame__soon">{venture.status}</span>
                         </span>
                       </span>
                     </a>

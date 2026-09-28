@@ -341,30 +341,42 @@
     font-family: var(--font-sans);
   }
 
-  /* Live embed of the venture's actual site. The iframe is rendered at 4x the
-     container width and scaled back down by a quarter, so it loads at a real
-     desktop viewport rather than reflowing to a phone layout inside a small
-     box. pointer-events are off so the card behaves as a preview: clicks go
-     to the wrapping link and open the real site, rather than being swallowed
-     by the embedded page. */
+  /* Static stand-in for a venture with no live site to show yet. An earlier
+     version embedded the real URL in an iframe, but a prelaunch domain
+     either doesn't resolve or sends X-Frame-Options, so it rendered as a
+     blank white box — worse than no preview at all. This is honest about
+     there being nothing to show: a monogram plus its own status badge,
+     matching the card's own gold-on-charcoal identity instead of borrowing
+     whatever the target site looks like. Swap for a real screenshot once a
+     venture actually launches. */
   .browser-frame__embed {
-    position: relative;
-    display: block;
-    overflow: hidden;
+    display: flex;
     height: 15rem;
-    background-color: #ffffff;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 0.75rem;
+    background-color: var(--color-bg);
   }
 
-  .browser-frame__embed iframe {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 400%;
-    height: 400%;
-    border: 0;
-    transform: scale(0.25);
-    transform-origin: top left;
-    pointer-events: none;
+  .browser-frame__mark {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 3.5rem;
+    height: 3.5rem;
+    border: 1px solid var(--color-line-strong);
+    border-radius: 50%;
+    font-family: var(--font-display);
+    font-size: 1.5rem;
+    color: var(--color-accent);
+  }
+
+  .browser-frame__soon {
+    font-size: var(--text-meta);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--color-muted);
   }
 
   .browser-frame__label {
