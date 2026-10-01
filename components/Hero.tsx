@@ -60,7 +60,7 @@ export default function Hero() {
           >
             <a
               href="#work"
-              className="button-sweep bg-accent px-8 py-4 text-center font-display text-sm font-bold uppercase tracking-wide text-accent-ink transition-colors hover:text-text"
+              className="button-sweep bg-accent px-8 py-4 text-center font-display text-sm font-bold uppercase tracking-wide text-accent-ink transition-colors"
             >
               See selected work
             </a>

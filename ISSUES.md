@@ -16,6 +16,7 @@ for things that are *wrong* or *missing*.
 
 | ID | Sev | Area | Issue | Where | Status |
 |---|---|---|---|---|---|
+| P-043 | 🟠 | Primary button text vanished on hover: the sweep fill and the hover label colour were both `--color-text` (cream on cream in dark, dark on dark in light). Present since the sweep was introduced | 2026-10-01 | Label keeps its `accent-ink` colour on hover, which contrasts with the fill in both themes; checked via computed styles on hover |
 | P-023 | 🔵 | Custom 404 page — the default Next.js 404 (black, unstyled body) sat under the new site header | 2026-10-01 | app/not-found.tsx, in the site's style; plain anchors with the base path applied so it works at any depth. Seen when opening a URL without the `/Website-portfolio/` prefix |
 | P-039 | 🟠 | Build | Local Linux build fails because the installed Lightning CSS native module is missing (`lightningcss.linux-x64-gnu.node`); restore platform dependencies and rerun the build | node_modules (local environment) | open |
 | P-010 | 🟠 | Perf | Images are unoptimised full-size PNGs with no `width`/`height` and no `loading="lazy"` → slow loads and layout shift | images/, index.html | open |

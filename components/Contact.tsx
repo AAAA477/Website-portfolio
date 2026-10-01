@@ -177,7 +177,7 @@ export default function Contact() {
           <button
             type="submit"
             disabled={status.state === "pending"}
-            className="button-sweep w-full bg-accent px-8 py-4 font-display text-sm font-bold uppercase tracking-wide sm:w-auto text-accent-ink transition-colors hover:text-text disabled:opacity-70"
+            className="button-sweep w-full bg-accent px-8 py-4 font-display text-sm font-bold uppercase tracking-wide sm:w-auto text-accent-ink transition-colors disabled:opacity-70"
           >
             Send message
           </button>

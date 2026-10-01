@@ -28,7 +28,7 @@ export default function NotFound() {
       <p className="mt-10 flex flex-col gap-3 sm:flex-row sm:gap-4">
         <a
           href={withBase("/")}
-          className="button-sweep bg-accent px-8 py-4 text-center font-display text-sm font-bold uppercase tracking-wide text-accent-ink transition-colors hover:text-text"
+          className="button-sweep bg-accent px-8 py-4 text-center font-display text-sm font-bold uppercase tracking-wide text-accent-ink transition-colors"
         >
           Back to home
         </a>
