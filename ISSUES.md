@@ -16,6 +16,7 @@ for things that are *wrong* or *missing*.
 
 | ID | Sev | Area | Issue | Where | Status |
 |---|---|---|---|---|---|
+| P-023 | 🔵 | Custom 404 page — the default Next.js 404 (black, unstyled body) sat under the new site header | 2026-10-01 | app/not-found.tsx, in the site's style; plain anchors with the base path applied so it works at any depth. Seen when opening a URL without the `/Website-portfolio/` prefix |
 | P-039 | 🟠 | Build | Local Linux build fails because the installed Lightning CSS native module is missing (`lightningcss.linux-x64-gnu.node`); restore platform dependencies and rerun the build | node_modules (local environment) | open |
 | P-010 | 🟠 | Perf | Images are unoptimised full-size PNGs with no `width`/`height` and no `loading="lazy"` → slow loads and layout shift | images/, index.html | open |
 | P-012 | 🟡 | Assets | [images/](images/) is cluttered: duplicate png/webp pairs, `Add a heading.png`, `Untitled design.png`, `A4-1.png`, `5ecca87d-...(1).png`, `Screenshot 2024-10-13 180736.png` | images/ | open |
@@ -33,7 +34,6 @@ for things that are *wrong* or *missing*.
 | P-037 | 🟡 | Assets | `work-1.png`/`work-2.png`/`work-3.png` are now unused — the new Work tabs show text-only project entries with no thumbnails | public/images/ | open |
 | P-021 | 🔵 | Feature | Light/dark theme toggle honouring `prefers-color-scheme` | — | open |
 | P-022 | 🔵 | Feature | Per-project detail pages with problem / approach / stack / outcome | — | open |
-| P-023 | 🔵 | Feature | Custom 404 page | — | open |
 
 ## Resolved
 
