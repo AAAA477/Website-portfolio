@@ -29,6 +29,17 @@ const STATUS_COLOR: Record<Status["state"], string> = {
 export default function Contact() {
   const formRef = useRef<HTMLFormElement>(null);
   const [status, setStatus] = useState<Status>({ state: "idle", message: "" });
+  const [copied, setCopied] = useState(false);
+
+  async function copyEmail() {
+    try {
+      await navigator.clipboard.writeText(site.email);
+      setCopied(true);
+      window.setTimeout(() => setCopied(false), 2000);
+    } catch {
+      // Clipboard can be blocked; the mailto link beside it still works.
+    }
+  }
 
   async function onSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -75,9 +86,8 @@ export default function Contact() {
     <section
       id="contact"
       aria-labelledby="contact-heading"
-      className="slide border-t border-line bg-surface py-24"
+      className="slide border-t border-line bg-surface py-16 md:py-24"
     >
-
       <div className="relative mx-auto grid w-full max-w-6xl gap-16 px-6 md:grid-cols-2">
         <div data-reveal>
           <p className="kicker">05 · Let's talk</p>
@@ -92,10 +102,20 @@ export default function Contact() {
           </p>
 
           <ul className="mt-6 grid gap-2">
-            <li>
+            <li className="flex flex-wrap items-center gap-3">
               <a href={`mailto:${site.email}`} className="link-draw">
                 {site.email}
               </a>
+              <button
+                type="button"
+                onClick={copyEmail}
+                className="rounded-sm border border-line-strong px-2.5 py-1 text-meta text-muted transition-colors hover:border-accent hover:text-text"
+              >
+                {copied ? "Copied" : "Copy"}
+              </button>
+              <span role="status" aria-live="polite" className="sr-only">
+                {copied ? "Email address copied" : ""}
+              </span>
             </li>
             <li>
               <a href={`tel:${site.phoneHref}`} className="link-draw">

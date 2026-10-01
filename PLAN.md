@@ -177,6 +177,12 @@ Note this moves **work above about**: a recruiter should hit proof before biogra
 Newest first. One entry per working session — this is the memory that makes the
 loop in [CLAUDE.md](CLAUDE.md) work.
 
+### 2026-10-01 (2) — UX polish pass
+
+**Did** — Header nav marks the section you're in (`aria-current="location"`, set from the same per-frame measure in Motion.tsx). Hover lifts/sweeps only on hover-capable devices (no sticky hover on touch). Hero CTAs stack full-width and equal on phones; mobile nav links and tab pills meet ~44px targets. Work's arrow-key hint is screen-reader-only. Contact gains a Copy-email button with announced feedback. Superdesign drafts (whole-site direction: Interpretability Lab, Ghana to Edmonton) exist on the canvas but nothing from them was adopted — Andrew asked for better UI/UX, not a re-skin.
+**Learned** — `@media (hover: hover)` can wrap rules inside `@layer components` without changing cascade order.
+**Next** — Decide whether to adopt any Superdesign direction; ventures copy; fix stale CLAUDE.md stack description.
+
 ### 2026-10-01 — Interaction overhaul: stop the deck fighting the visitor
 
 **Did** — Removed scroll-snap, the dim/blur/shrink "recede" on non-centred slides, the page-load curtain, the ghost numerals and the Space/arrow-key slide hijack. Added a CSS cross-document view transition between pages. Rail is now a hover-tooltip at xl+ only; counter likewise. Restored live venture previews (`components/VentureEmbed.tsx`: 1280x800 iframe scaled to the card, monogram fallback, overlay link). Work tabs no longer overflow at 360px; section spacing and hero portrait scale down on small screens; grain layer no longer uses a blend mode.

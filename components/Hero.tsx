@@ -62,18 +62,18 @@ export default function Hero() {
           <p
             data-reveal
             style={revealDelay(words.length + 2)}
-            className="mt-10 flex flex-wrap gap-4"
+            className="mt-10 flex flex-col gap-3 sm:flex-row sm:gap-4"
           >
             <a
               href="#work"
-              className="button-sweep rounded-sm bg-accent px-6 py-3 font-semibold text-accent-ink transition-colors hover:text-text"
+              className="button-sweep rounded-sm bg-accent px-6 py-3 text-center font-semibold text-accent-ink transition-colors hover:text-text"
             >
               See selected work
             </a>
             <a
               href={site.cv}
               download
-              className="link-draw rounded-sm border border-line-strong px-6 py-3 font-semibold !text-text transition-colors hover:border-accent"
+              className="link-draw rounded-sm border border-line-strong px-6 py-3 text-center font-semibold !text-text transition-colors hover:border-accent"
             >
               Download CV (PDF)
             </a>

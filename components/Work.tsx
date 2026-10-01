@@ -65,8 +65,8 @@ export default function Work() {
             Work
           </h2>
           <p className="mt-2 max-w-[62ch] text-muted">
-            What I get paid to build, what I research, and what I build for myself. Use the
-            arrow keys to move between tabs.
+            What I get paid to build, what I research, and what I build for myself.
+            <span className="sr-only"> Use the arrow keys to move between tabs.</span>
           </p>
         </header>
 

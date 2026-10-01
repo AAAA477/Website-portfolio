@@ -63,13 +63,13 @@ export default function SiteHeader() {
           aria-label="Primary"
           className={`${open ? "block" : "hidden"} basis-full md:block md:basis-auto`}
         >
-          <ul className="flex flex-col items-start gap-4 pb-4 text-meta uppercase tracking-widest md:flex-row md:items-center md:pb-0">
+          <ul className="flex flex-col items-start gap-1 pb-4 text-meta uppercase tracking-widest md:flex-row md:items-center md:pb-0">
             {navLinks.map((link) => (
               <li key={link.href}>
                 <a
                   href={link.href}
                   onClick={close}
-                  className="text-muted transition-colors hover:text-text"
+                  className="block py-2 text-muted transition-colors hover:text-text md:py-1"
                 >
                   {link.label}
                 </a>

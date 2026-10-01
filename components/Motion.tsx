@@ -66,6 +66,9 @@ export default function Motion() {
         document.querySelectorAll<HTMLAnchorElement>(".slide-rail__link"),
       ) as HTMLAnchorElement[];
       const counter = document.querySelector<HTMLElement>(".slide-counter__current");
+      const navLinks = Array.prototype.slice.call(
+        document.querySelectorAll<HTMLAnchorElement>('.site-header nav a[href*="#"]'),
+      ) as HTMLAnchorElement[];
       let ticking = false;
 
       // Read inside rAF so scrolling never forces synchronous layout.
@@ -107,6 +110,11 @@ export default function Motion() {
 
         railLinks.forEach((link) => {
           link.classList.toggle("is-current", link.dataset.slide === current?.id);
+        });
+
+        navLinks.forEach((link) => {
+          if (link.hash === `#${current?.id}`) link.setAttribute("aria-current", "location");
+          else link.removeAttribute("aria-current");
         });
 
         if (counter) {

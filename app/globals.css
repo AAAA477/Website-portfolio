@@ -235,6 +235,12 @@
     -webkit-backdrop-filter: blur(10px);
   }
 
+  /* Current-section marker in the header nav (set by Motion.tsx). */
+  .site-header a[aria-current="location"] {
+    color: var(--color-text);
+    box-shadow: 0 1px 0 var(--color-accent);
+  }
+
   /* Entry cards (work, research, projects) lift and gain a top accent bar on
      hover — a transform + a pseudo-element scale, both compositor-only, so
      neighbours never reflow. */
@@ -262,13 +268,15 @@
     transition: transform 280ms var(--ease-soft);
   }
 
-  html.js-motion .entry-card:hover {
-    transform: translate3d(0, -3px, 0);
-  }
+@media (hover: hover) {
+    html.js-motion .entry-card:hover {
+      transform: translate3d(0, -3px, 0);
+    }
 
-  html.js-motion .entry-card:hover::before {
-    transform: scaleX(1);
-  }
+    html.js-motion .entry-card:hover::before {
+      transform: scaleX(1);
+    }
+}
 
   /* Section eyebrow: a small accent numeral + tracked label ahead of every
      heading, in place of a bare h2. */
@@ -350,15 +358,18 @@
       color 200ms ease;
   }
 
-  html.js-motion .chip:hover {
-    border-color: var(--color-accent);
-    color: var(--color-text);
-    transform: translate3d(0, -2px, 0);
-  }
+@media (hover: hover) {
+    html.js-motion .chip:hover {
+      border-color: var(--color-accent);
+      color: var(--color-text);
+      transform: translate3d(0, -2px, 0);
+    }
+}
 
   /* Segmented tab control: sliding accent pill behind the active tab. */
   .tab-pill {
     position: relative;
+    min-height: 2.75rem;
     z-index: 1;
     transition: color 240ms ease;
   }
@@ -508,10 +519,12 @@
     transition: transform 280ms var(--ease-soft);
   }
 
-  html.js-motion .venture-preview:hover .browser-frame,
-  html.js-motion .venture-preview:focus-within .browser-frame {
-    transform: translate3d(0, -3px, 0);
-  }
+@media (hover: hover) {
+    html.js-motion .venture-preview:hover .browser-frame,
+    html.js-motion .venture-preview:focus-within .browser-frame {
+      transform: translate3d(0, -3px, 0);
+    }
+}
 
   /* Hero heading words: each word is its own reveal target with its own
      stagger delay, set inline per word — see components/Hero.tsx. */
