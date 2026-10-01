@@ -1,0 +1,746 @@
+# Theme tokens (summary)
+
+**Dark (default), warm charcoal + brass:** bg `#141312`, surface `#1c1a18`, line `#2e2b28`, line-strong `#46413b`, text `#f5f3f0`, muted `#a8a29a`, accent `#c9a961`, accent-ink `#141312`, danger `#f0a89a`.
+**Light (`data-theme=light` or prefers-color-scheme):** bg `#f4efe6`, surface `#e9e2d1`, line `#ddd3bd`, text `#201c16`, muted `#6b6154`, accent `#7a5f26`.
+**Fonts (no webfonts):** display = ui-serif/Georgia/Iowan Old Style; body = system-ui sans.
+**Type scale (fluid clamp):** meta 13-14px, body 16-17px, lead 18-21px, h3 24-32px, h2 32-52px, h1 36-64px.
+**Layout:** content column max-w-6xl (72rem), px-6; sections `py-16 md:py-24` with `border-t border-line`. Radius mostly square (cards/chips `rounded-sm`), pills `rounded-full`.
+**Motion:** reveal fade-up on scroll, word-by-word hero heading, title clip-path wipe, scroll progress bar, roaming blurred accent spotlight, hover lift on cards; all gated by prefers-reduced-motion.
+**Breakpoints:** Tailwind defaults (sm 640, md 768, lg 1024, xl 1280).
+
+## Raw: `app/globals.css`
+```css
+@import "tailwindcss";
+
+/* =========================================================================
+   Design tokens.
+   Tailwind v4 reads this block and generates the matching utilities, so
+   `bg-bg`, `text-muted`, `font-display` and `text-h1` all resolve from here.
+   Warm charcoal canvas, one brass accent, editorial serif over system sans.
+   ========================================================================= */
+
+@theme {
+  /* Surfaces. Warm charcoal rather than pure black. */
+  --color-bg: #141312;
+  --color-surface: #1c1a18;
+  --color-line: #2e2b28;
+  --color-line-strong: #46413b;
+
+  /* Ink. Contrast against --color-bg: text 16.99:1, muted 7.43:1,
+     accent 8.38:1. All clear WCAG AA; text and accent clear AAA. */
+  --color-text: #f5f3f0;
+  --color-muted: #a8a29a;
+  --color-accent: #c9a961;
+  --color-accent-ink: #141312;
+  --color-danger: #f0a89a;
+
+  /* Type. No webfonts: zero network cost, zero swap reflow, zero CLS. */
+  --font-display: ui-serif, Georgia, "Iowan Old Style", "Times New Roman", serif;
+  --font-sans: system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+
+  /* Fluid type scale. */
+  --text-meta: clamp(0.8125rem, 0.79rem + 0.12vw, 0.875rem);
+  --text-body: clamp(1rem, 0.97rem + 0.15vw, 1.0625rem);
+  --text-lead: clamp(1.125rem, 1.07rem + 0.28vw, 1.3125rem);
+  --text-h3: clamp(1.5rem, 1.35rem + 0.75vw, 2rem);
+  --text-h2: clamp(2rem, 1.6rem + 2vw, 3.25rem);
+  --text-h1: clamp(2.25rem, 1.6rem + 3.2vw, 4rem);
+
+  --ease-soft: cubic-bezier(0.22, 0.61, 0.36, 1);
+}
+
+:root {
+  color-scheme: dark;
+}
+
+/* ---------- Theme: light ----------
+   The @theme block above is the dark palette — the site's default, and what
+   renders with JavaScript off. Swapping to light re-declares the same
+   token names at higher specificity, so every utility already built on them
+   (bg-bg, text-text, border-line, chip, entry-card, …) repaints for free;
+   nothing per-component to touch. Two ways in: a visitor explicitly chose
+   light (ThemeToggle sets `data-theme="light"` and localStorage, below), or
+   — with no stored choice either way — their system itself prefers light.
+   Contrast against --color-bg: text 15.1:1, muted 5.02:1, accent 4.61:1 —
+   all clear WCAG AA. */
+:root[data-theme="light"] {
+  --color-bg: #f4efe6;
+  --color-surface: #e9e2d1;
+  --color-line: #ddd3bd;
+  --color-line-strong: #b7a98c;
+
+  --color-text: #201c16;
+  --color-muted: #6b6154;
+  --color-accent: #7a5f26;
+  --color-accent-ink: #f9f5ec;
+  --color-danger: #a3362a;
+
+  color-scheme: light;
+}
+
+@media (prefers-color-scheme: light) {
+  :root:not([data-theme="dark"]) {
+    --color-bg: #f4efe6;
+    --color-surface: #e9e2d1;
+    --color-line: #ddd3bd;
+    --color-line-strong: #b7a98c;
+
+    --color-text: #201c16;
+    --color-muted: #6b6154;
+    --color-accent: #7a5f26;
+    --color-accent-ink: #f9f5ec;
+    --color-danger: #a3362a;
+
+    color-scheme: light;
+  }
+}
+
+/* ---------- Base ---------- */
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+    /* Keeps anchored sections clear of the sticky header. */
+    scroll-padding-top: 5.5rem;
+    -webkit-text-size-adjust: 100%;
+    text-size-adjust: 100%;
+    /* The slide-focus recede transform (scale + translate, for whichever
+       slide isn't centred) can push an inactive slide's box a handful of
+       pixels past the viewport edge at narrower widths — harmless since
+       that state is blurred and 22% opacity, but it was creating a real,
+       visible horizontal scrollbar. Clipping it here is the standard-safe
+       fix: it can't affect fixed-position chrome (rail, counter, header),
+       only whether an accidental sideways scroll is offered. */
+    overflow-x: hidden;
+  }
+
+  body {
+    position: relative;
+    /* Belt-and-braces with html's overflow-x: hidden above — body has its
+       own default (visible) overflow, and in at least one tested engine
+       that was enough for the viewport to still permit horizontal scroll
+       despite html's rule computing correctly. */
+    overflow-x: hidden;
+    background-color: var(--color-bg);
+    color: var(--color-text);
+    font-family: var(--font-sans);
+    font-size: var(--text-body);
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* A faint film-grain texture over the whole canvas. Static, and drawn with
+     plain alpha rather than a blend mode: a full-viewport blend layer forces
+     the browser to re-composite everything beneath it on every scroll frame. */
+  body::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+    z-index: 1;
+    pointer-events: none;
+    opacity: 0.07;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--color-accent);
+    outline-offset: 3px;
+    border-radius: 2px;
+  }
+
+  :focus:not(:focus-visible) {
+    outline: none;
+  }
+
+  ::selection {
+    background-color: var(--color-accent);
+    color: var(--color-accent-ink);
+  }
+
+  /* Firefox reads this; Chromium/Safari need the pseudo-elements below.
+     Thin and low-contrast on purpose — a scrollbar is chrome, not content. */
+  html {
+    scrollbar-color: var(--color-line-strong) transparent;
+    scrollbar-width: thin;
+  }
+
+  ::-webkit-scrollbar {
+    width: 0.6rem;
+    height: 0.6rem;
+  }
+
+  ::-webkit-scrollbar-track {
+    background-color: transparent;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    background-color: var(--color-line-strong);
+    border-radius: 999px;
+    border: 2px solid var(--color-bg);
+    background-clip: padding-box;
+  }
+
+  ::-webkit-scrollbar-thumb:hover {
+    background-color: var(--color-accent);
+    background-clip: padding-box;
+  }
+}
+
+/* =========================================================================
+   Motion.
+   Every rule is scoped to html.js-motion, which Motion.tsx adds only when
+   JavaScript runs AND the visitor has not asked for reduced motion. Without
+   that class nothing is hidden, nothing animates, and the page is complete.
+   Only opacity and transform are animated: compositor-only, so motion can
+   never contribute to layout shift.
+   ========================================================================= */
+
+@layer components {
+  .scroll-progress {
+    display: none;
+  }
+
+  html.js-motion .scroll-progress {
+    display: block;
+    position: fixed;
+    inset-block-start: 0;
+    inset-inline: 0;
+    z-index: 60;
+    height: 2px;
+    background-color: var(--color-accent);
+    transform: scaleX(var(--progress, 0));
+    transform-origin: left center;
+    will-change: transform;
+  }
+
+  html.js-motion [data-reveal] {
+    opacity: 0;
+    transform: translate3d(0, 1.25rem, 0);
+  }
+
+  html.js-motion [data-reveal].is-revealed {
+    opacity: 1;
+    transform: translate3d(0, 0, 0);
+    transition:
+      opacity 620ms var(--ease-soft),
+      transform 620ms var(--ease-soft);
+    /* --reveal-delay is set per element to stagger a group. */
+    transition-delay: var(--reveal-delay, 0ms);
+  }
+
+  /* Media panels travel further, so the hero reads as layered. */
+  html.js-motion [data-reveal-distance="far"] {
+    transform: translate3d(0, 2rem, 0);
+  }
+
+  /* Colour only: the header height never changes, so nothing below shifts. */
+  html.js-motion .site-header {
+    transition:
+      border-color 240ms ease,
+      background-color 240ms ease;
+  }
+
+  html.js-motion .site-header[data-scrolled="true"] {
+    border-bottom-color: var(--color-line-strong);
+    background-color: color-mix(in srgb, var(--color-bg) 82%, transparent);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+  }
+
+  /* Entry cards (work, research, projects) lift and gain a top accent bar on
+     hover — a transform + a pseudo-element scale, both compositor-only, so
+     neighbours never reflow. */
+  .entry-card {
+    position: relative;
+    overflow: hidden;
+  }
+
+  .entry-card::before {
+    content: "";
+    position: absolute;
+    inset-inline: 0;
+    top: 0;
+    height: 2px;
+    background-color: var(--color-accent);
+    transform: scaleX(0);
+    transform-origin: left center;
+  }
+
+  html.js-motion .entry-card {
+    transition: transform 280ms var(--ease-soft);
+  }
+
+  html.js-motion .entry-card::before {
+    transition: transform 280ms var(--ease-soft);
+  }
+
+  html.js-motion .entry-card:hover {
+    transform: translate3d(0, -3px, 0);
+  }
+
+  html.js-motion .entry-card:hover::before {
+    transform: scaleX(1);
+  }
+
+  /* Section eyebrow: a small accent numeral + tracked label ahead of every
+     heading, in place of a bare h2. */
+  .kicker {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    margin-bottom: 0.75rem;
+    font-family: var(--font-sans);
+    font-size: var(--text-meta);
+    font-weight: 600;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--color-accent);
+  }
+
+  .kicker::before {
+    content: "";
+    width: 2rem;
+    height: 1px;
+    background-color: currentColor;
+  }
+
+  /* Underline-draw link: the rule already there as a static border becomes
+     an animated fill on hover, growing from the left. */
+  .link-draw {
+    position: relative;
+    padding-bottom: 2px;
+    color: var(--color-accent);
+    text-decoration: none;
+    background-image: linear-gradient(currentColor, currentColor);
+    background-repeat: no-repeat;
+    background-position: left bottom;
+    background-size: 100% 1px;
+  }
+
+  html.js-motion .link-draw {
+    background-size: 0% 1px;
+    transition: background-size 280ms var(--ease-soft);
+  }
+
+  html.js-motion .link-draw:hover,
+  html.js-motion .link-draw:focus-visible {
+    background-size: 100% 1px;
+  }
+
+  /* Primary button: a fill that sweeps in from the left on hover, rather
+     than a flat colour swap. The swept layer is a pseudo-element clipped to
+     the button box, so no overflow and no layout cost. */
+  .button-sweep {
+    position: relative;
+    overflow: hidden;
+    isolation: isolate;
+  }
+
+  .button-sweep::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    background-color: var(--color-text);
+    transform: translateX(-100%);
+  }
+
+  html.js-motion .button-sweep::before {
+    transition: transform 320ms var(--ease-soft);
+  }
+
+  html.js-motion .button-sweep:hover::before,
+  html.js-motion .button-sweep:focus-visible::before {
+    transform: translateX(0);
+  }
+
+  /* Skill chip: lifts and takes the accent border on hover. */
+  .chip {
+    transition:
+      border-color 200ms ease,
+      transform 200ms var(--ease-soft),
+      color 200ms ease;
+  }
+
+  html.js-motion .chip:hover {
+    border-color: var(--color-accent);
+    color: var(--color-text);
+    transform: translate3d(0, -2px, 0);
+  }
+
+  /* Segmented tab control: sliding accent pill behind the active tab. */
+  .tab-pill {
+    position: relative;
+    z-index: 1;
+    transition: color 240ms ease;
+  }
+
+  .tab-pill[aria-selected="true"] {
+    color: var(--color-accent-ink);
+  }
+
+  .tab-pill[aria-selected="true"] .tab-pill__bg {
+    opacity: 1;
+    transform: scale(1);
+  }
+
+  .tab-pill__bg {
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    border-radius: 999px;
+    background-color: var(--color-accent);
+    opacity: 0;
+    transform: scale(0.92);
+  }
+
+  html.js-motion .tab-pill__bg {
+    transition:
+      opacity 240ms var(--ease-soft),
+      transform 240ms var(--ease-soft);
+  }
+
+  /* Hero portrait parallax: Motion.tsx writes --parallax on scroll. Small
+     magnitude, transform-only, disabled outright under reduced motion since
+     Motion.tsx never starts the scroll listener in that case. */
+  .parallax {
+    transform: translate3d(0, calc(var(--parallax, 0) * 1px), 0);
+  }
+
+  /* Browser-chrome mockup for a pre-launch venture: honest about there being
+     no live content to show yet (both sites are single-line stubs right
+     now), while still reading as "a real site exists" rather than a plain
+     link. Swap the body content for a real screenshot once one launches. */
+  .browser-frame {
+    overflow: hidden;
+    border-radius: 6px;
+  }
+
+  .browser-frame__bar {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    padding: 0.6rem 0.85rem;
+    background-color: var(--color-bg);
+    border-bottom: 1px solid var(--color-line);
+  }
+
+  .browser-frame__dot {
+    width: 0.55rem;
+    height: 0.55rem;
+    border-radius: 50%;
+    background-color: var(--color-line-strong);
+  }
+
+  .browser-frame__url {
+    margin-left: 0.35rem;
+    padding: 0.15rem 0.6rem;
+    border-radius: 999px;
+    background-color: var(--color-surface);
+    color: var(--color-muted);
+    font-size: var(--text-meta);
+    font-family: var(--font-sans);
+  }
+
+  /* Static stand-in for a venture with no live site to show yet. An earlier
+     version embedded the real URL in an iframe, but a prelaunch domain
+     either doesn't resolve or sends X-Frame-Options, so it rendered as a
+     blank white box — worse than no preview at all. This is honest about
+     there being nothing to show: a monogram plus its own status badge,
+     matching the card's own gold-on-charcoal identity instead of borrowing
+     whatever the target site looks like. Swap for a real screenshot once a
+     venture actually launches. */
+  /* Live preview: the real site is rendered at a fixed 1280x800 desktop
+     viewport and scaled down to the card width (VentureEmbed.tsx measures the
+     card and sets the scale). The monogram sits underneath, so if a site is
+     slow, offline or refuses framing, the card still reads as intentional. */
+  .venture-embed {
+    position: relative;
+    overflow: hidden;
+    background-color: var(--color-bg);
+  }
+
+  .venture-embed__fallback {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 0.75rem;
+  }
+
+  .venture-embed__frame {
+    position: absolute;
+    top: 0;
+    left: 0;
+    border: 0;
+    background-color: #fff;
+    transform-origin: 0 0;
+    pointer-events: none;
+    opacity: 0;
+  }
+
+  .venture-embed__frame.is-loaded {
+    opacity: 1;
+    transition: opacity 400ms ease;
+  }
+
+  .browser-frame__mark {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 3.5rem;
+    height: 3.5rem;
+    border: 1px solid var(--color-line-strong);
+    border-radius: 50%;
+    font-family: var(--font-display);
+    font-size: 1.5rem;
+    color: var(--color-accent);
+  }
+
+  .browser-frame__soon {
+    font-size: var(--text-meta);
+    color: var(--color-muted);
+  }
+
+  .browser-frame__label {
+    padding: 0.4rem 0.9rem;
+    border-radius: 999px;
+    background-color: var(--color-bg);
+    border: 1px solid var(--color-line-strong);
+    color: var(--color-text);
+    font-size: var(--text-meta);
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+  }
+
+  html.js-motion .browser-frame {
+    transition: transform 280ms var(--ease-soft);
+  }
+
+  html.js-motion .venture-preview:hover .browser-frame,
+  html.js-motion .venture-preview:focus-within .browser-frame {
+    transform: translate3d(0, -3px, 0);
+  }
+
+  /* Hero heading words: each word is its own reveal target with its own
+     stagger delay, set inline per word — see components/Hero.tsx. */
+  .word-reveal {
+    display: inline-block;
+  }
+}
+
+/* ---------- Page transitions ----------
+   Moving between the home page and /updates is a full navigation on a static
+   site. Opting in to cross-document view transitions makes the browser
+   cross-fade the old page into the new one instead of flashing white, with no
+   JavaScript. Unsupported browsers just navigate normally. Skipped entirely
+   under reduced motion. */
+
+@media (prefers-reduced-motion: no-preference) {
+  @view-transition {
+    navigation: auto;
+  }
+
+  ::view-transition-old(root),
+  ::view-transition-new(root) {
+    animation-duration: 260ms;
+    animation-timing-function: var(--ease-soft);
+  }
+}
+
+/* ---------- Sections ----------
+   Five sections read as five acts, but they scroll like a normal page: no
+   scroll-snap, no dimming or blurring of whatever isn't centred. Content is
+   always legible while you move through it. Only the hero claims a full
+   screen; the others are as tall as their content. */
+
+.slide {
+  position: relative;
+}
+
+.slide-hero {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  min-height: min(calc(100svh - 4.5rem), 60rem);
+}
+
+/* Title wipe: a section heading arrives through a widening clip-path, like
+   a title card cutting in, rather than the plain fade the rest of the
+   header uses. Reserved for the four section headings — the hero's h1
+   already has its own word-by-word reveal. */
+html.js-motion .title-wipe {
+  clip-path: inset(0 100% 0 -0.1em);
+}
+
+html.js-motion [data-reveal].is-revealed .title-wipe {
+  clip-path: inset(0 0 0 -0.1em);
+  transition: clip-path 800ms var(--ease-soft) 100ms;
+}
+
+/* Roaming spotlight: one soft accent glow, repositioned per slide by
+   Motion.tsx setting data-spotlight on <html>. Reads as a stage light
+   finding the current point rather than a fixed decoration — z-index -1
+   keeps it behind every slide's own background and content. */
+.spotlight {
+  position: fixed;
+  top: 20%;
+  left: 78%;
+  z-index: -1;
+  width: min(34rem, 90vw);
+  height: min(34rem, 90vw);
+  border-radius: 50%;
+  background-color: var(--color-accent);
+  opacity: 0.1;
+  filter: blur(90px);
+  transform: translate(-50%, -50%);
+  pointer-events: none;
+}
+
+html.js-motion .spotlight {
+  transition:
+    top 900ms var(--ease-soft),
+    left 900ms var(--ease-soft);
+}
+
+html[data-spotlight="work"] .spotlight {
+  top: 28%;
+  left: 12%;
+}
+
+html[data-spotlight="capabilities"] .spotlight {
+  top: 72%;
+  left: 82%;
+}
+
+html[data-spotlight="about"] .spotlight {
+  top: 22%;
+  left: 18%;
+}
+
+html[data-spotlight="contact"] .spotlight {
+  top: 68%;
+  left: 60%;
+}
+
+/* Slide counter: the deck's page number, bottom-left, updated by
+   Motion.tsx alongside the rail. Decorative echo of real position — the
+   rail's links are the accessible way to navigate — so it's aria-hidden.
+   Both it and the rail only appear at xl, where the margins either side of
+   the 72rem content column are wide enough that they can't sit on text. */
+.slide-counter {
+  position: fixed;
+  left: 1rem;
+  bottom: 1.25rem;
+  z-index: 40;
+  display: none;
+  align-items: baseline;
+  gap: 0.3rem;
+  font-family: var(--font-display);
+  color: var(--color-muted);
+}
+
+.slide-counter__current {
+  font-size: 1.375rem;
+  color: var(--color-text);
+}
+
+.slide-counter__total {
+  font-size: var(--text-meta);
+}
+
+/* Slide rail: a presentation's outline, docked to the right edge. Ticks
+   stay put; the label is a tooltip that floats to the tick's left on hover
+   or focus, so nothing ever shifts or overlaps content. */
+.slide-rail {
+  position: fixed;
+  right: 1rem;
+  top: 50%;
+  z-index: 40;
+  display: none;
+  transform: translateY(-50%);
+}
+
+@media (min-width: 80rem) {
+  .slide-counter {
+    display: flex;
+  }
+
+  .slide-rail {
+    display: block;
+  }
+}
+
+.slide-rail__link {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  /* Generous hit area around a 2px tick. */
+  padding: 0.4rem 0 0.4rem 1rem;
+  color: var(--color-muted);
+  text-decoration: none;
+}
+
+.slide-rail__tick {
+  width: 1.25rem;
+  height: 2px;
+  background-color: var(--color-line-strong);
+}
+
+html.js-motion .slide-rail__tick {
+  transition: background-color 240ms ease, width 240ms var(--ease-soft);
+}
+
+.slide-rail__label {
+  position: absolute;
+  right: calc(100% + 0.25rem);
+  top: 50%;
+  transform: translateY(-50%);
+  padding: 0.2rem 0.6rem;
+  border: 1px solid var(--color-line-strong);
+  border-radius: 999px;
+  background-color: var(--color-surface);
+  color: var(--color-text);
+  font-size: var(--text-meta);
+  white-space: nowrap;
+  opacity: 0;
+  pointer-events: none;
+}
+
+html.js-motion .slide-rail__label {
+  transition: opacity 160ms ease;
+}
+
+.slide-rail__link:hover .slide-rail__label,
+.slide-rail__link:focus-visible .slide-rail__label {
+  opacity: 1;
+}
+
+.slide-rail__link:hover .slide-rail__tick,
+.slide-rail__link:focus-visible .slide-rail__tick,
+.slide-rail__link.is-current .slide-rail__tick {
+  width: 2rem;
+  background-color: var(--color-accent);
+}
+
+/* ---------- Reduced motion ---------- */
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+```

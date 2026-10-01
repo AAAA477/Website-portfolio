@@ -1,0 +1,68 @@
+{
+  "schemaVersion": 1,
+  "targets": {
+    "/": {
+      "targetKind": "existing-ui",
+      "projectId": "25d4c486-219b-4a80-a3bf-30aa26340e8d",
+      "baselineDraftId": "cc107d76-c6cd-4075-80a1-36a237868252",
+      "activeDraftId": "cc107d76-c6cd-4075-80a1-36a237868252",
+      "designSystemPath": ".superdesign/design-system.md",
+      "referenceIds": [
+        "ff928c99-198b-4543-b670-489f7333e199"
+      ],
+      "contextFiles": [
+        ".superdesign/design-system.md",
+        "app/globals.css",
+        "app/page.tsx",
+        "app/layout.tsx",
+        "components/SiteHeader.tsx",
+        "components/SiteFooter.tsx",
+        "components/Hero.tsx",
+        "components/Work.tsx",
+        "components/Capabilities.tsx",
+        "components/About.tsx",
+        "components/AboutPhoto.tsx",
+        "components/Contact.tsx",
+        "components/VentureEmbed.tsx",
+        "lib/content.ts"
+      ],
+      "fingerprints": {
+        ".superdesign/design-system.md": "b909f75925db9558086303cffd86df13d1eb7b18f9083cf317e12abe5dbdb23e",
+        "app/globals.css": "76141270c305f2dbda749454100d05ef06116b43054cec57472e8d6fe27a743e",
+        "app/page.tsx": "116cefee11671665ea80c1f8412dc56a2b01704ca1c40cbbe732eab6e777d3d0",
+        "app/layout.tsx": "92e9ca8c31d32c7fb1ca74c0d74b666bcc8e47d8d0f9beed7b53291f5373975a",
+        "components/SiteHeader.tsx": "2406f770c9d500e91f95f9f2fd5e8ee08d97f5b725c6f7fb4d7557a8cca7434c",
+        "components/SiteFooter.tsx": "fa1d7f5986da84b97230fa85fe125f07e7d3de9670d1279fa4f2b7783bb557b8",
+        "components/Hero.tsx": "5832299c28a9e08f4e17b35292e37ee0f3e2235afbe83b035a5113c7325e8e44",
+        "components/Work.tsx": "fc7e337711b54ca4b4855503648521962fdfa1f886f494585e7a541661fab100",
+        "components/Capabilities.tsx": "354e201b86a2b4e5056203c064750f9acdbf1cc1386b66006b4017b67b7f72ee",
+        "components/About.tsx": "4968cd11e73582d963166c02003de38a6530ea7c5eacb6032b1d8d68dc38b415",
+        "components/AboutPhoto.tsx": "7ebb59349d82f26cbe8c4b3da4fbdb83533055f4d1fdbbad898b4193d5397fff",
+        "components/Contact.tsx": "8ee4e29230d8463f3c9b340d84ba8989b5e482db0643ff6f8f4933045e778a20",
+        "components/VentureEmbed.tsx": "733d46333e2d457352d332f723bc4ee6084810993963c308d3632014f7e8e9c3",
+        "lib/content.ts": "843c71052b026ffd374f88b64e7eea8dd3e9538f5c6c2a3e1b8a3c8f9c511750"
+      },
+      "components": [],
+      "drafts": {
+        "cc107d76-c6cd-4075-80a1-36a237868252": {
+          "title": "Current home page (faithful reproduction)",
+          "visualDirection": "current dark charcoal + brass",
+          "currentVersion": 1
+        },
+        "d8cdfbb3-d562-46e8-bf68-58bca8a7cd43": {
+          "title": "Interpretability Lab",
+          "visualDirection": "light paper, signal blue, Instrument Serif, activation-map capability tiles",
+          "parentDraftId": "cc107d76-c6cd-4075-80a1-36a237868252",
+          "currentVersion": 1
+        },
+        "53706f90-73d7-405c-acc9-e81ecc6c7811": {
+          "title": "Ghana to Edmonton",
+          "visualDirection": "deep green, kente gold, Bricolage Grotesque, banded sections, arch portrait",
+          "parentDraftId": "cc107d76-c6cd-4075-80a1-36a237868252",
+          "currentVersion": 1
+        }
+      },
+      "updatedAt": "2026-10-01T21:06:54Z"
+    }
+  }
+}
