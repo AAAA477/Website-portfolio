@@ -5,6 +5,6 @@
  * plain client component (ThemeToggle) without reading computed styles.
  */
 export const THEME_BG = {
-  light: "#f4efe6",
-  dark: "#141312",
+  light: "#F6F1E4",
+  dark: "#0C2A20",
 } as const;

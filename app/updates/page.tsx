@@ -9,10 +9,10 @@ export const metadata: Metadata = {
 export default function UpdatesPage() {
   return (
     <main id="main" className="py-24">
-      <div className="mx-auto w-full max-w-6xl px-6">
+      <div className="mx-auto w-full max-w-7xl px-6">
         <header className="mb-14">
           <p className="kicker">06 · As it happens</p>
-          <h1 className="font-display text-h1 leading-tight tracking-tight">Updates</h1>
+          <h1 className="font-display text-h1 font-extrabold uppercase leading-none tracking-tight">Updates</h1>
           <p className="mt-2 max-w-[62ch] text-muted">
             A running, dated log of real milestones, not a blog. New entries go at the top.
           </p>

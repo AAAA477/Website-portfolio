@@ -1,4 +1,5 @@
 import type { Metadata, Viewport } from "next";
+import { Bricolage_Grotesque, DM_Sans } from "next/font/google";
 import type { ReactNode } from "react";
 import Motion from "@/components/Motion";
 import SiteFooter from "@/components/SiteFooter";
@@ -9,6 +10,9 @@ import { site } from "@/lib/content";
 import { withBase } from "@/lib/paths";
 import { THEME_BG } from "@/lib/theme";
 import "./globals.css";
+
+const bricolage = Bricolage_Grotesque({ subsets: ["latin"], variable: "--font-bricolage", display: "swap" });
+const dmSans = DM_Sans({ subsets: ["latin"], variable: "--font-dm-sans", display: "swap" });
 
 // Runs before first paint, so a stored theme choice applies immediately —
 // without it, the page would render in the default dark palette for one
@@ -54,7 +58,7 @@ export const viewport: Viewport = {
 
 export default function RootLayout({ children }: { children: ReactNode }) {
   return (
-    <html lang="en">
+    <html lang="en" className={`${bricolage.variable} ${dmSans.variable}`}>
       <head>
         <script dangerouslySetInnerHTML={{ __html: THEME_INIT_SCRIPT }} />
       </head>

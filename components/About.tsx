@@ -7,15 +7,15 @@ export default function About() {
     <section
       id="about"
       aria-labelledby="about-heading"
-      className="slide border-t border-line py-16 md:py-24"
+      className="slide border-b-8 border-band py-16 md:py-28"
     >
 
-      <div className="relative mx-auto grid w-full max-w-6xl gap-16 px-6 md:grid-cols-[1.25fr_1fr]">
+      <div className="relative mx-auto grid w-full max-w-7xl gap-16 px-6 lg:grid-cols-[1.5fr_1fr]">
         <div data-reveal>
           <p className="kicker">04 · Who's asking</p>
           <h2
             id="about-heading"
-            className="title-wipe font-display text-h2 leading-tight tracking-tight"
+            className="title-wipe mb-8 font-display text-h2 font-extrabold uppercase leading-none tracking-tight"
           >
             About
           </h2>

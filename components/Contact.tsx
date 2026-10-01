@@ -86,14 +86,14 @@ export default function Contact() {
     <section
       id="contact"
       aria-labelledby="contact-heading"
-      className="slide border-t border-line bg-surface py-16 md:py-24"
+      className="slide border-b-8 border-band bg-surface py-16 md:py-28"
     >
-      <div className="relative mx-auto grid w-full max-w-6xl gap-16 px-6 md:grid-cols-2">
+      <div className="relative mx-auto grid w-full max-w-7xl gap-16 px-6 lg:grid-cols-2">
         <div data-reveal>
           <p className="kicker">05 · Let's talk</p>
           <h2
             id="contact-heading"
-            className="title-wipe font-display text-h2 leading-tight tracking-tight"
+            className="title-wipe mb-6 font-display text-h2 font-extrabold uppercase leading-none tracking-tight"
           >
             Get in touch
           </h2>
@@ -126,9 +126,15 @@ export default function Contact() {
           {/* TODO (P-002): add real profile URLs, then restore a social links list here. */}
         </div>
 
-        <form ref={formRef} onSubmit={onSubmit} noValidate data-reveal>
+        <form
+          ref={formRef}
+          onSubmit={onSubmit}
+          noValidate
+          data-reveal
+          className="border-4 border-line bg-bg p-6 md:p-10"
+        >
           <p className="mb-6 grid gap-2">
-            <label htmlFor="name" className="text-meta uppercase tracking-widest text-muted">
+            <label htmlFor="name" className="text-meta font-bold uppercase tracking-widest text-accent">
               Name
             </label>
             <input
@@ -137,12 +143,12 @@ export default function Contact() {
               type="text"
               autoComplete="name"
               required
-              className="w-full rounded-sm border border-line-strong bg-bg px-4 py-3 transition-colors hover:border-muted"
+              className="w-full rounded-none border-2 border-line-strong bg-transparent px-4 py-3 text-lg transition-colors hover:border-muted focus:border-accent"
             />
           </p>
 
           <p className="mb-6 grid gap-2">
-            <label htmlFor="email" className="text-meta uppercase tracking-widest text-muted">
+            <label htmlFor="email" className="text-meta font-bold uppercase tracking-widest text-accent">
               Email
             </label>
             <input
@@ -151,12 +157,12 @@ export default function Contact() {
               type="email"
               autoComplete="email"
               required
-              className="w-full rounded-sm border border-line-strong bg-bg px-4 py-3 transition-colors hover:border-muted"
+              className="w-full rounded-none border-2 border-line-strong bg-transparent px-4 py-3 text-lg transition-colors hover:border-muted focus:border-accent"
             />
           </p>
 
           <p className="mb-6 grid gap-2">
-            <label htmlFor="message" className="text-meta uppercase tracking-widest text-muted">
+            <label htmlFor="message" className="text-meta font-bold uppercase tracking-widest text-accent">
               Message
             </label>
             <textarea
@@ -164,14 +170,14 @@ export default function Contact() {
               name="Message"
               rows={5}
               required
-              className="w-full resize-y rounded-sm border border-line-strong bg-bg px-4 py-3 transition-colors hover:border-muted"
+              className="w-full resize-y rounded-none border-2 border-line-strong bg-transparent px-4 py-3 text-lg transition-colors hover:border-muted focus:border-accent"
             />
           </p>
 
           <button
             type="submit"
             disabled={status.state === "pending"}
-            className="button-sweep rounded-sm bg-accent px-6 py-3 font-semibold text-accent-ink transition-colors hover:text-text disabled:opacity-70"
+            className="button-sweep w-full bg-accent px-8 py-4 font-display text-sm font-bold uppercase tracking-wide sm:w-auto text-accent-ink transition-colors hover:text-text disabled:opacity-70"
           >
             Send message
           </button>

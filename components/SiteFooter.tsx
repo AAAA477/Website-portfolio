@@ -3,8 +3,8 @@ import { withBase } from "@/lib/paths";
 
 export default function SiteFooter() {
   return (
-    <footer className="border-t border-line py-10 text-meta text-muted">
-      <div className="mx-auto flex w-full max-w-6xl flex-wrap justify-between gap-4 px-6">
+    <footer className="border-t-8 border-band py-10 text-meta text-muted">
+      <div className="mx-auto flex w-full max-w-7xl flex-wrap justify-between gap-4 px-6">
         {/* Rendered at build time, so the year is correct without client JS. */}
         <p>
           &copy; {new Date().getFullYear()} {site.name}

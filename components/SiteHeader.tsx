@@ -37,9 +37,9 @@ export default function SiteHeader() {
   }, [open, close]);
 
   return (
-    <header className="site-header sticky top-0 z-50 border-b border-line bg-bg">
-      <div className="mx-auto flex w-full max-w-6xl flex-wrap items-center justify-between gap-4 px-6 py-4">
-        <a href={withBase("/#top")} className="font-display text-lead tracking-tight">
+    <header className="site-header sticky top-0 z-50 border-b-4 border-accent bg-bg">
+      <div className="mx-auto flex w-full max-w-7xl flex-wrap items-center justify-between gap-4 px-6 py-4">
+        <a href={withBase("/#top")} className="font-display text-xl font-bold uppercase tracking-tight text-accent">
           {site.shortName}
         </a>
 
@@ -52,7 +52,7 @@ export default function SiteHeader() {
             aria-expanded={open}
             aria-controls="primary-nav"
             onClick={() => setOpen((value) => !value)}
-            className="rounded-sm border border-line-strong px-3 py-2 text-meta uppercase tracking-widest md:hidden"
+            className="border-2 border-accent px-3 py-2 text-meta font-bold uppercase tracking-widest text-accent md:hidden"
           >
             Menu
           </button>
@@ -63,7 +63,7 @@ export default function SiteHeader() {
           aria-label="Primary"
           className={`${open ? "block" : "hidden"} basis-full md:block md:basis-auto`}
         >
-          <ul className="flex flex-col items-start gap-1 pb-4 text-meta uppercase tracking-widest md:flex-row md:items-center md:pb-0">
+          <ul className="flex flex-col items-start gap-1 pb-4 md:gap-8 text-meta font-bold uppercase tracking-widest md:flex-row md:items-center md:pb-0">
             {navLinks.map((link) => (
               <li key={link.href}>
                 <a
@@ -79,7 +79,7 @@ export default function SiteHeader() {
               <a
                 href={withBase("/#contact")}
                 onClick={close}
-                className="rounded-sm border border-line-strong px-3 py-2 text-text transition-colors hover:border-accent hover:bg-surface"
+                className="inline-block bg-accent px-5 py-2.5 text-accent-ink transition-colors hover:bg-text"
               >
                 Get in touch
               </a>

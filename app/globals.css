@@ -4,35 +4,37 @@
    Design tokens.
    Tailwind v4 reads this block and generates the matching utilities, so
    `bg-bg`, `text-muted`, `font-display` and `text-h1` all resolve from here.
-   Warm charcoal canvas, one brass accent, editorial serif over system sans.
+   Deep green ground (cream paper in light), kente-gold accent, one red used only for decorative bands. Bricolage Grotesque display over DM Sans.
    ========================================================================= */
 
 @theme {
   /* Surfaces. Warm charcoal rather than pure black. */
-  --color-bg: #141312;
-  --color-surface: #1c1a18;
-  --color-line: #2e2b28;
-  --color-line-strong: #46413b;
+  --color-bg: #0C2A20;
+  --color-surface: #10382B;
+  --color-line: #1B5441;
+  --color-line-strong: #4F8C74;
 
-  /* Ink. Contrast against --color-bg: text 16.99:1, muted 7.43:1,
-     accent 8.38:1. All clear WCAG AA; text and accent clear AAA. */
-  --color-text: #f5f3f0;
-  --color-muted: #a8a29a;
-  --color-accent: #c9a961;
-  --color-accent-ink: #141312;
-  --color-danger: #f0a89a;
+  /* Ink. Contrast against --color-bg: text 13.6:1, muted 7.3:1, accent 8.4:1.
+     --color-band (red) is decorative only: 2.9:1, so it never carries text. */
+  --color-text: #F6F1E4;
+  --color-muted: #A3B8B0;
+  --color-accent: #F0B72F;
+  --color-accent-ink: #0C2A20;
+  --color-danger: #F3A093;
+  --color-band: #C23B2A;
 
-  /* Type. No webfonts: zero network cost, zero swap reflow, zero CLS. */
-  --font-display: ui-serif, Georgia, "Iowan Old Style", "Times New Roman", serif;
-  --font-sans: system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  /* Type. Self-hosted at build time by next/font (app/layout.tsx), with
+     metric-adjusted fallbacks so the swap never shifts layout. */
+  --font-display: var(--font-bricolage), ui-sans-serif, system-ui, sans-serif;
+  --font-sans: var(--font-dm-sans), system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
 
   /* Fluid type scale. */
   --text-meta: clamp(0.8125rem, 0.79rem + 0.12vw, 0.875rem);
   --text-body: clamp(1rem, 0.97rem + 0.15vw, 1.0625rem);
   --text-lead: clamp(1.125rem, 1.07rem + 0.28vw, 1.3125rem);
   --text-h3: clamp(1.5rem, 1.35rem + 0.75vw, 2rem);
-  --text-h2: clamp(2rem, 1.6rem + 2vw, 3.25rem);
-  --text-h1: clamp(2.25rem, 1.6rem + 3.2vw, 4rem);
+  --text-h2: clamp(2.25rem, 1.8rem + 2.4vw, 3.75rem);
+  --text-h1: clamp(2.25rem, 1.7rem + 3vw, 4.5rem);
 
   --ease-soft: cubic-bezier(0.22, 0.61, 0.36, 1);
 }
@@ -49,35 +51,37 @@
    nothing per-component to touch. Two ways in: a visitor explicitly chose
    light (ThemeToggle sets `data-theme="light"` and localStorage, below), or
    — with no stored choice either way — their system itself prefers light.
-   Contrast against --color-bg: text 15.1:1, muted 5.02:1, accent 4.61:1 —
+   Contrast against --color-bg: text 13.6:1, muted 5.9:1, accent 5.0:1 —
    all clear WCAG AA. */
 :root[data-theme="light"] {
-  --color-bg: #f4efe6;
-  --color-surface: #e9e2d1;
-  --color-line: #ddd3bd;
-  --color-line-strong: #b7a98c;
+  --color-bg: #F6F1E4;
+  --color-surface: #ECE5D2;
+  --color-line: #D5CBB0;
+  --color-line-strong: #6F8378;
 
-  --color-text: #201c16;
-  --color-muted: #6b6154;
-  --color-accent: #7a5f26;
-  --color-accent-ink: #f9f5ec;
-  --color-danger: #a3362a;
+  --color-text: #0C2A20;
+  --color-muted: #4A6258;
+  --color-accent: #8A5F00;
+  --color-accent-ink: #F6F1E4;
+  --color-danger: #A8301F;
+    --color-band: #A8301F;
 
   color-scheme: light;
 }
 
 @media (prefers-color-scheme: light) {
   :root:not([data-theme="dark"]) {
-    --color-bg: #f4efe6;
-    --color-surface: #e9e2d1;
-    --color-line: #ddd3bd;
-    --color-line-strong: #b7a98c;
+    --color-bg: #F6F1E4;
+    --color-surface: #ECE5D2;
+    --color-line: #D5CBB0;
+    --color-line-strong: #6F8378;
 
-    --color-text: #201c16;
-    --color-muted: #6b6154;
-    --color-accent: #7a5f26;
-    --color-accent-ink: #f9f5ec;
-    --color-danger: #a3362a;
+    --color-text: #0C2A20;
+    --color-muted: #4A6258;
+    --color-accent: #8A5F00;
+    --color-accent-ink: #F6F1E4;
+    --color-danger: #A8301F;
+    --color-band: #A8301F;
 
     color-scheme: light;
   }
@@ -283,21 +287,21 @@
   .kicker {
     display: flex;
     align-items: center;
-    gap: 0.75rem;
-    margin-bottom: 0.75rem;
+    gap: 1rem;
+    margin-bottom: 1rem;
     font-family: var(--font-sans);
     font-size: var(--text-meta);
-    font-weight: 600;
-    letter-spacing: 0.16em;
+    font-weight: 700;
+    letter-spacing: 0.14em;
     text-transform: uppercase;
     color: var(--color-accent);
   }
 
   .kicker::before {
     content: "";
-    width: 2rem;
-    height: 1px;
-    background-color: currentColor;
+    width: 3rem;
+    height: 3px;
+    background-color: var(--color-band);
   }
 
   /* Underline-draw link: the rule already there as a static border becomes
@@ -366,37 +370,19 @@
     }
 }
 
-  /* Segmented tab control: sliding accent pill behind the active tab. */
-  .tab-pill {
+  /* Underline tabs: the active tab takes a thick accent rule that sits on
+     the strip's baseline. */
+  .tab-underline {
     position: relative;
-    min-height: 2.75rem;
-    z-index: 1;
-    transition: color 240ms ease;
+    min-height: 3rem;
+    margin-bottom: -2px;
+    border-bottom: 4px solid transparent;
+    transition: color 200ms ease, border-color 200ms ease;
   }
 
-  .tab-pill[aria-selected="true"] {
-    color: var(--color-accent-ink);
-  }
-
-  .tab-pill[aria-selected="true"] .tab-pill__bg {
-    opacity: 1;
-    transform: scale(1);
-  }
-
-  .tab-pill__bg {
-    position: absolute;
-    inset: 0;
-    z-index: -1;
-    border-radius: 999px;
-    background-color: var(--color-accent);
-    opacity: 0;
-    transform: scale(0.92);
-  }
-
-  html.js-motion .tab-pill__bg {
-    transition:
-      opacity 240ms var(--ease-soft),
-      transform 240ms var(--ease-soft);
+  .tab-underline[aria-selected="true"] {
+    color: var(--color-accent);
+    border-bottom-color: var(--color-accent);
   }
 
   /* Hero portrait parallax: Motion.tsx writes --parallax on scroll. Small

@@ -177,6 +177,12 @@ Note this moves **work above about**: a recruiter should hit proof before biogra
 Newest first. One entry per working session — this is the memory that makes the
 loop in [CLAUDE.md](CLAUDE.md) work.
 
+### 2026-10-01 (3) — Adopted the "Ghana to Edmonton" direction
+
+**Did** — Andrew picked the Superdesign draft `53706f90` (project 25d4c486…) after briefly selecting Interpretability Lab; the Lab edits were reverted before commit. Ported to the real site: deep-green ground / kente-gold accent / red used only as decorative section bands (`--color-band`, 2.9:1, never carries text); Bricolage Grotesque + DM Sans via `next/font/google` (self-hosted at build); arch portrait with offset red block; banded work rows with underline tabs; large framed venture previews; bulleted capability lists; bordered contact panel. Light theme re-derived (cream ground, `#8A5F00` accent, all pairs ≥5:1). Content width widened to 7xl.
+**Learned** — A trailing space inside an `inline-block` collapses, so the per-word hero reveal must keep the space *outside* the span (`Fragment`) or words fuse. This supersedes the earlier "no webfonts" type decision.
+**Next** — Real-device check; review Updates and About pages in the new style at mobile widths; ventures copy (CONTENT.md); correct CLAUDE.md (stack + type decision).
+
 ### 2026-10-01 (2) — UX polish pass
 
 **Did** — Header nav marks the section you're in (`aria-current="location"`, set from the same per-frame measure in Motion.tsx). Hover lifts/sweeps only on hover-capable devices (no sticky hover on touch). Hero CTAs stack full-width and equal on phones; mobile nav links and tab pills meet ~44px targets. Work's arrow-key hint is screen-reader-only. Contact gains a Copy-email button with announced feedback. Superdesign drafts (whole-site direction: Interpretability Lab, Ghana to Edmonton) exist on the canvas but nothing from them was adopted — Andrew asked for better UI/UX, not a re-skin.
