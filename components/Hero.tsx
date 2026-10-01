@@ -9,18 +9,15 @@ export default function Hero() {
     <section
       id="top"
       aria-labelledby="hero-heading"
-      className="slide relative overflow-hidden py-24"
+      className="slide slide-hero relative overflow-hidden py-12 md:py-20"
     >
       {/* Soft accent halo, contained to the hero, not an ambient page glow. */}
       <div
         aria-hidden="true"
         className="pointer-events-none absolute -right-40 -top-40 size-[32rem] rounded-full bg-accent/10 blur-3xl"
       />
-      <span className="ghost-numeral" aria-hidden="true">
-        01
-      </span>
 
-      <div className="slide-focus relative mx-auto grid w-full max-w-6xl items-center gap-16 px-6 lg:grid-cols-[1.15fr_0.85fr]">
+      <div className="relative mx-auto grid w-full max-w-6xl items-center gap-10 px-6 md:gap-16 lg:grid-cols-[1.15fr_0.85fr]">
         <div>
           <p
             data-reveal
@@ -88,7 +85,7 @@ export default function Hero() {
           data-reveal-distance="far"
           data-parallax="16"
           style={revealDelay(words.length + 2)}
-          className="parallax border border-line bg-surface p-2"
+          className="parallax mx-auto w-full max-w-xs border border-line bg-surface p-2 sm:max-w-sm lg:max-w-none"
         >
           <Image
             src={hero.portrait.src}

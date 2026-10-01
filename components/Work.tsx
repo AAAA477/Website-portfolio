@@ -2,6 +2,7 @@
 
 import { useId, useState, type KeyboardEvent } from "react";
 import { projects, research, ventures, workExperience } from "@/lib/content";
+import VentureEmbed from "@/components/VentureEmbed";
 import { revealDelay } from "@/lib/motion";
 
 const TABS = ["Work experience", "Research", "Projects"] as const;
@@ -21,7 +22,7 @@ function TagList({ tags }: { tags: readonly string[] }) {
 
 function EntryHeader({ title, period }: { title: string; period: string }) {
   return (
-    <div className="flex flex-wrap items-baseline justify-between gap-x-4 gap-y-1 pr-16">
+    <div className="flex flex-wrap items-baseline justify-between gap-x-4 gap-y-1">
       <h3 className="font-display text-h3 leading-tight">{title}</h3>
       <p className="text-meta tabular-nums text-muted">{period}</p>
     </div>
@@ -51,14 +52,10 @@ export default function Work() {
     <section
       id="work"
       aria-labelledby="work-heading"
-      data-enter="right"
-      className="slide border-t border-line py-24"
+      className="slide border-t border-line py-16 md:py-24"
     >
-      <span className="ghost-numeral" aria-hidden="true">
-        02
-      </span>
 
-      <div className="slide-focus relative mx-auto w-full max-w-6xl px-6">
+      <div className="relative mx-auto w-full max-w-6xl px-6">
         <header data-reveal className="mb-10">
           <p className="kicker">02 · What I do</p>
           <h2
@@ -78,7 +75,7 @@ export default function Work() {
           aria-label="Work, research and projects"
           onKeyDown={onKeyDown}
           data-reveal
-          className="mb-10 inline-flex gap-1 rounded-full border border-line bg-surface p-1"
+          className="mb-10 flex w-full max-w-full gap-1 overflow-x-auto rounded-full border border-line bg-surface p-1 sm:inline-flex sm:w-auto"
         >
           {TABS.map((tab, index) => {
             const selected = tab === active;
@@ -92,7 +89,7 @@ export default function Work() {
                 aria-controls={`${baseId}-panel-${index}`}
                 tabIndex={selected ? 0 : -1}
                 onClick={() => setActive(tab)}
-                className="tab-pill rounded-full px-4 py-2 text-meta font-medium uppercase tracking-widest text-muted data-[selected=true]:text-accent-ink"
+                className="tab-pill flex-1 whitespace-nowrap rounded-full px-3 py-2 text-meta font-medium text-muted data-[selected=true]:text-accent-ink sm:flex-none sm:px-5"
                 data-selected={selected}
               >
                 <span aria-hidden="true" className="tab-pill__bg" />
@@ -145,26 +142,28 @@ export default function Work() {
                       </span>
                     </div>
 
-                    <a
-                      href={venture.href}
-                      className="block"
-                      aria-label={`Visit ${venture.name}`}
-                    >
+                    <div className="venture-preview relative">
                       <span className="browser-frame block border border-line bg-surface">
-                        <span className="browser-frame__bar">
-                          <span aria-hidden="true" className="browser-frame__dot" />
-                          <span aria-hidden="true" className="browser-frame__dot" />
-                          <span aria-hidden="true" className="browser-frame__dot" />
+                        <span className="browser-frame__bar" aria-hidden="true">
+                          <span className="browser-frame__dot" />
+                          <span className="browser-frame__dot" />
+                          <span className="browser-frame__dot" />
                           <span className="browser-frame__url">{venture.name}</span>
                         </span>
-                        <span className="browser-frame__embed" aria-hidden="true">
-                          <span className="browser-frame__mark">
-                            {venture.name.charAt(0).toUpperCase()}
-                          </span>
-                          <span className="browser-frame__soon">{venture.status}</span>
-                        </span>
+                        <VentureEmbed
+                          href={venture.href}
+                          name={venture.name}
+                          status={venture.status}
+                        />
                       </span>
-                    </a>
+                      {/* The preview is inert (pointer-events: none, not
+                          focusable); this overlay is the real, accessible link. */}
+                      <a
+                        href={venture.href}
+                        aria-label={`Visit ${venture.name}`}
+                        className="absolute inset-0 z-10"
+                      />
+                    </div>
 
                     <p className="mt-3 text-muted">{venture.description}</p>
                   </li>

@@ -25,8 +25,8 @@ export default function SlideRail() {
   if (pathname !== "/") return null;
 
   return (
-    <nav aria-label="Sections" className="slide-rail hidden lg:flex">
-      <ol className="flex flex-col gap-[1.1rem]">
+    <nav aria-label="Sections" className="slide-rail">
+      <ol className="flex flex-col">
         {SLIDES.map((slide) => (
           <li key={slide.id}>
             <a href={`#${slide.id}`} data-slide={slide.id} className="slide-rail__link">

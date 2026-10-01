@@ -117,19 +117,16 @@
     -webkit-font-smoothing: antialiased;
   }
 
-  /* A faint film-grain texture over the whole canvas. Static, so it costs
-     nothing under prefers-reduced-motion and nothing on repaint — it's a
-     fixed background-image, not an animation. This is what turns a flat
-     charcoal fill into something that reads as a considered surface rather
-     than a default. */
+  /* A faint film-grain texture over the whole canvas. Static, and drawn with
+     plain alpha rather than a blend mode: a full-viewport blend layer forces
+     the browser to re-composite everything beneath it on every scroll frame. */
   body::before {
     content: "";
     position: fixed;
     inset: 0;
     z-index: 1;
     pointer-events: none;
-    opacity: 0.5;
-    mix-blend-mode: overlay;
+    opacity: 0.07;
     background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
   }
 
@@ -441,14 +438,40 @@
      matching the card's own gold-on-charcoal identity instead of borrowing
      whatever the target site looks like. Swap for a real screenshot once a
      venture actually launches. */
-  .browser-frame__embed {
+  /* Live preview: the real site is rendered at a fixed 1280x800 desktop
+     viewport and scaled down to the card width (VentureEmbed.tsx measures the
+     card and sets the scale). The monogram sits underneath, so if a site is
+     slow, offline or refuses framing, the card still reads as intentional. */
+  .venture-embed {
+    position: relative;
+    overflow: hidden;
+    background-color: var(--color-bg);
+  }
+
+  .venture-embed__fallback {
+    position: absolute;
+    inset: 0;
     display: flex;
-    height: 15rem;
     flex-direction: column;
     align-items: center;
     justify-content: center;
     gap: 0.75rem;
-    background-color: var(--color-bg);
+  }
+
+  .venture-embed__frame {
+    position: absolute;
+    top: 0;
+    left: 0;
+    border: 0;
+    background-color: #fff;
+    transform-origin: 0 0;
+    pointer-events: none;
+    opacity: 0;
+  }
+
+  .venture-embed__frame.is-loaded {
+    opacity: 1;
+    transition: opacity 400ms ease;
   }
 
   .browser-frame__mark {
@@ -466,8 +489,6 @@
 
   .browser-frame__soon {
     font-size: var(--text-meta);
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
     color: var(--color-muted);
   }
 
@@ -487,8 +508,8 @@
     transition: transform 280ms var(--ease-soft);
   }
 
-  html.js-motion a:hover > .browser-frame,
-  html.js-motion a:focus-visible > .browser-frame {
+  html.js-motion .venture-preview:hover .browser-frame,
+  html.js-motion .venture-preview:focus-within .browser-frame {
     transform: translate3d(0, -3px, 0);
   }
 
@@ -499,139 +520,46 @@
   }
 }
 
-/* ---------- Page curtain ----------
-   A one-shot load transition: a solid panel that lifts off the page. Pure CSS,
-   driven by the media query directly rather than the js-motion class, so it
-   works even before hydration and never causes a flash-then-cover. Under
-   reduced motion the whole rule is skipped, so the element never paints. */
-
-.page-curtain {
-  position: fixed;
-  inset: 0;
-  z-index: 200;
-  background-color: var(--color-bg);
-  pointer-events: none;
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .page-curtain {
-    display: none;
-  }
-}
+/* ---------- Page transitions ----------
+   Moving between the home page and /updates is a full navigation on a static
+   site. Opting in to cross-document view transitions makes the browser
+   cross-fade the old page into the new one instead of flashing white, with no
+   JavaScript. Unsupported browsers just navigate normally. Skipped entirely
+   under reduced motion. */
 
 @media (prefers-reduced-motion: no-preference) {
-  .page-curtain {
-    animation: curtain-lift 650ms var(--ease-soft) 200ms forwards;
+  @view-transition {
+    navigation: auto;
   }
 
-  @keyframes curtain-lift {
-    to {
-      transform: translateY(-100%);
-    }
+  ::view-transition-old(root),
+  ::view-transition-new(root) {
+    animation-duration: 260ms;
+    animation-timing-function: var(--ease-soft);
   }
 }
 
-/* ---------- Slideshow ----------
-   Each top-level section is a slide: near-full-viewport, snapping into
-   place as you scroll, so the page reads as one story told in five acts
-   rather than a document you skim past. min-height (not height) means a
-   slide with more content than fits one screen simply grows — nothing is
-   ever clipped. Snapping itself is motion-adjacent (it can fight a
-   vestibular-sensitive scroller), so it only engages under
-   no-preference, same as everything else on this page. */
+/* ---------- Sections ----------
+   Five sections read as five acts, but they scroll like a normal page: no
+   scroll-snap, no dimming or blurring of whatever isn't centred. Content is
+   always legible while you move through it. Only the hero claims a full
+   screen; the others are as tall as their content. */
 
 .slide {
   position: relative;
-  min-height: 100dvh;
+}
+
+.slide-hero {
   display: flex;
   flex-direction: column;
   justify-content: center;
+  min-height: min(calc(100svh - 4.5rem), 60rem);
 }
 
-/* Ghost numeral: an oversized, near-invisible echo of the slide's own
-   kicker number ("02 · What I do" → "02"), anchored low and to the right.
-   Purely decorative type, not a second source of truth — it reinforces the
-   deck's "five acts" structure (already stated by the rail and counter) and
-   gives a shorter slide like Capabilities a reason for its empty lower
-   space instead of that space reading as an accident. Static and low-cost:
-   no motion, so nothing to gate behind prefers-reduced-motion. z-index:auto
-   plus a positioned, later sibling (the slide's content wrapper) is what
-   keeps it behind real content — see components for the pairing. */
-.ghost-numeral {
-  position: absolute;
-  right: clamp(1rem, 4vw, 3rem);
-  bottom: 1rem;
-  line-height: 0.8;
-  font-family: var(--font-display);
-  font-size: clamp(6rem, 14vw, 12rem);
-  color: var(--color-text);
-  opacity: 0.045;
-  pointer-events: none;
-  user-select: none;
-}
-
-@media (prefers-reduced-motion: no-preference) {
-  html:has(.slide) {
-    scroll-snap-type: y proximity;
-  }
-
-  .slide {
-    scroll-snap-align: start;
-  }
-}
-
-/* Cinematic depth: every slide starts scaled down, dimmed and slightly
-   soft-focused, offset toward where it's arriving from. Motion.tsx marks
-   the slide nearest the viewport centre .is-active every scroll frame,
-   which is what triggers the transition below — so the effect is a real
-   "arrival" each time you scroll onto a slide, not something tied
-   continuously to scroll position (which never differs from the
-   pre-existing look at rest, and so was invisible in a still screenshot).
-   Inactive slides stay visibly receded the whole time they're not
-   centred. --enter-x/--enter-y set the arrival direction per slide via
-   data-enter below, so the deck doesn't repeat one motion five times. */
-.slide-focus {
-  --enter-x: 0px;
-  --enter-y: 2.5rem;
-  will-change: transform, opacity, filter;
-}
-
-.slide[data-enter="right"] .slide-focus {
-  --enter-x: 5rem;
-  --enter-y: 0px;
-}
-
-.slide[data-enter="left"] .slide-focus {
-  --enter-x: -5rem;
-  --enter-y: 0px;
-}
-
-.slide[data-enter="rise"] .slide-focus {
-  --enter-x: 0px;
-  --enter-y: 4.5rem;
-}
-
-html.js-motion .slide-focus {
-  transform: scale(0.85) translate3d(var(--enter-x), var(--enter-y), 0);
-  opacity: 0.22;
-  filter: blur(6px);
-  transition:
-    transform 900ms var(--ease-soft),
-    opacity 700ms var(--ease-soft),
-    filter 700ms var(--ease-soft);
-}
-
-html.js-motion .slide.is-active .slide-focus {
-  transform: scale(1) translate3d(0, 0, 0);
-  opacity: 1;
-  filter: blur(0);
-}
-
-/* Title wipe: a slide's heading arrives through a widening clip-path, like
+/* Title wipe: a section heading arrives through a widening clip-path, like
    a title card cutting in, rather than the plain fade the rest of the
    header uses. Reserved for the four section headings — the hero's h1
-   already has its own word-by-word reveal and doesn't need a second
-   treatment layered on top. */
+   already has its own word-by-word reveal. */
 html.js-motion .title-wipe {
   clip-path: inset(0 100% 0 -0.1em);
 }
@@ -650,8 +578,8 @@ html.js-motion [data-reveal].is-revealed .title-wipe {
   top: 20%;
   left: 78%;
   z-index: -1;
-  width: 34rem;
-  height: 34rem;
+  width: min(34rem, 90vw);
+  height: min(34rem, 90vw);
   border-radius: 50%;
   background-color: var(--color-accent);
   opacity: 0.1;
@@ -688,13 +616,15 @@ html[data-spotlight="contact"] .spotlight {
 
 /* Slide counter: the deck's page number, bottom-left, updated by
    Motion.tsx alongside the rail. Decorative echo of real position — the
-   rail's links are the accessible way to navigate — so it's aria-hidden. */
+   rail's links are the accessible way to navigate — so it's aria-hidden.
+   Both it and the rail only appear at xl, where the margins either side of
+   the 72rem content column are wide enough that they can't sit on text. */
 .slide-counter {
   position: fixed;
-  left: 1.5rem;
+  left: 1rem;
   bottom: 1.25rem;
   z-index: 40;
-  display: flex;
+  display: none;
   align-items: baseline;
   gap: 0.3rem;
   font-family: var(--font-display);
@@ -710,32 +640,35 @@ html[data-spotlight="contact"] .spotlight {
   font-size: var(--text-meta);
 }
 
-/* Below sm, the counter sits too close to the hero's CV button to read as
-   intentional. The rail (real wayfinding) already recedes below lg; this
-   decorative echo recedes earlier still, since it has no function of its
-   own to preserve. */
-@media (max-width: 39.99rem) {
-  .slide-counter {
-    display: none;
-  }
-}
-
 /* Slide rail: a presentation's outline, docked to the right edge. Ticks
-   are functional wayfinding for a page that genuinely is five slides, not
-   decoration — the same reasoning that already justifies the numbered
-   kickers on each section. */
+   stay put; the label is a tooltip that floats to the tick's left on hover
+   or focus, so nothing ever shifts or overlaps content. */
 .slide-rail {
   position: fixed;
-  right: 1.5rem;
+  right: 1rem;
   top: 50%;
   z-index: 40;
+  display: none;
   transform: translateY(-50%);
 }
 
+@media (min-width: 80rem) {
+  .slide-counter {
+    display: flex;
+  }
+
+  .slide-rail {
+    display: block;
+  }
+}
+
 .slide-rail__link {
+  position: relative;
   display: flex;
   align-items: center;
-  gap: 0.6rem;
+  justify-content: flex-end;
+  /* Generous hit area around a 2px tick. */
+  padding: 0.4rem 0 0.4rem 1rem;
   color: var(--color-muted);
   text-decoration: none;
 }
@@ -751,22 +684,28 @@ html.js-motion .slide-rail__tick {
 }
 
 .slide-rail__label {
+  position: absolute;
+  right: calc(100% + 0.25rem);
+  top: 50%;
+  transform: translateY(-50%);
+  padding: 0.2rem 0.6rem;
+  border: 1px solid var(--color-line-strong);
+  border-radius: 999px;
+  background-color: var(--color-surface);
+  color: var(--color-text);
   font-size: var(--text-meta);
-  opacity: 0;
-  max-width: 0;
-  overflow: hidden;
   white-space: nowrap;
+  opacity: 0;
+  pointer-events: none;
 }
 
 html.js-motion .slide-rail__label {
-  transition: opacity 200ms ease;
+  transition: opacity 160ms ease;
 }
 
 .slide-rail__link:hover .slide-rail__label,
-.slide-rail__link:focus-visible .slide-rail__label,
-.slide-rail__link.is-current .slide-rail__label {
+.slide-rail__link:focus-visible .slide-rail__label {
   opacity: 1;
-  max-width: 8rem;
 }
 
 .slide-rail__link:hover .slide-rail__tick,
@@ -774,10 +713,6 @@ html.js-motion .slide-rail__label {
 .slide-rail__link.is-current .slide-rail__tick {
   width: 2rem;
   background-color: var(--color-accent);
-}
-
-.slide-rail__link.is-current {
-  color: var(--color-text);
 }
 
 /* ---------- Reduced motion ---------- */

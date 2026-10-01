@@ -4,7 +4,7 @@
 > the end of every working session. Derived from [INTENT.md](INTENT.md).
 > Defects and papercuts live in [ISSUES.md](ISSUES.md), not here.
 
-**Last updated:** 2026-09-28
+**Last updated:** 2026-10-01
 **Current phase:** Phase 2 complete except for two items blocked on Andrew (real project imagery, P-036's content TODOs). Everything else — type/spacing scale, hero, project cards, motion, the slideshow, light/dark, breakpoint sweep — is done and browser-verified.
 
 ---
@@ -176,6 +176,12 @@ Note this moves **work above about**: a recruiter should hit proof before biogra
 
 Newest first. One entry per working session — this is the memory that makes the
 loop in [CLAUDE.md](CLAUDE.md) work.
+
+### 2026-10-01 — Interaction overhaul: stop the deck fighting the visitor
+
+**Did** — Removed scroll-snap, the dim/blur/shrink "recede" on non-centred slides, the page-load curtain, the ghost numerals and the Space/arrow-key slide hijack. Added a CSS cross-document view transition between pages. Rail is now a hover-tooltip at xl+ only; counter likewise. Restored live venture previews (`components/VentureEmbed.tsx`: 1280x800 iframe scaled to the card, monogram fallback, overlay link). Work tabs no longer overflow at 360px; section spacing and hero portrait scale down on small screens; grain layer no longer uses a blend mode.
+**Learned** — The earlier iframe previews were blank because the sites were prelaunch; both now return 200 with no X-Frame-Options, so embeds work again. Separately, the old keydown handler never excluded BUTTON, so Space on a tab button scrolled the page instead of selecting the tab. Every effect that dims content *while it is being scrolled past* reads as broken interaction, however cinematic in a still screenshot.
+**Next** — Real-device check (iOS Safari for dvh/svh and view transitions); descriptions for the ventures (CONTENT.md); CLAUDE.md still describes the pre-Next.js vanilla stack and needs correcting.
 
 ### 2026-09-28 (4) — Breakpoint sweep: found and fixed a real overflow bug
 

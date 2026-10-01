@@ -7,14 +7,10 @@ export default function About() {
     <section
       id="about"
       aria-labelledby="about-heading"
-      data-enter="rise"
-      className="slide border-t border-line py-24"
+      className="slide border-t border-line py-16 md:py-24"
     >
-      <span className="ghost-numeral" aria-hidden="true">
-        04
-      </span>
 
-      <div className="slide-focus relative mx-auto grid w-full max-w-6xl gap-16 px-6 md:grid-cols-[1.25fr_1fr]">
+      <div className="relative mx-auto grid w-full max-w-6xl gap-16 px-6 md:grid-cols-[1.25fr_1fr]">
         <div data-reveal>
           <p className="kicker">04 · Who's asking</p>
           <h2
